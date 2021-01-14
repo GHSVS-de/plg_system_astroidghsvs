@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.9" type="plugin" group="system" method="upgrade">
+ <name>PLG_SYSTEM_ASTROIDGHSVS</name>
+ <author>G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</author>
+ <creationDate>2021-01-12</creationDate>
+ <copyright>(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</copyright>
+ <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
+ <authorUrl>https://www.ghsvs.de</authorUrl>
+ <version>2021.01.12</version>
+    <versionHistory>
+2021.01.12:
+- schraefl-bedachungen.eu, Coax-Template
+    </versionHistory>
+ <description>PLG_SYSTEM_ASTROIDGHSVS_XML_DESCRIPTION</description>
+
+	<updateservers>
+		<server type="extension" priority="1" name="PLG_SYSTEM_ASTROIDGHSVS">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml</server>
+	</updateservers>
+
+ <files>
+  <filename plugin="astroidghsvs">astroidghsvs.php</filename>
+  <filename>LICENSE.txt</filename>
+  <folder>language</folder>
+ </files>
+
+ <config>
+  <fields name="params">
+   <fieldset name="basic">
+    <field type="hidden" default="1" name="astroidghsvsplugin" />
+   </fieldset>
+		<fieldset name="Einstellungen" label="Einstellungen">
+			<field name="forceSCSSCompilingGhsvsSpacer" type="note"
+				label="forceSCSSCompilingGhsvs"
+				description="Wird nur im Frontend berücksichtigt, wenn Template entsprechend vorbereitet ist. JA: EIGENE Astroid-SCSS-Kompilierung forcieren (= immer SCSS kompilieren). Nicht im Echtbetrieb aktivieren! Verlangsamt die Seite u.U. sehr! Einstellung NEIN bedeutet, der TemplateHelper prüft, ob Neukompilierung notwendig." />
+			<field name="forceSCSSCompilingGhsvs" type="list" default="0" filter="integer"
+				label="forceSCSSCompilingGhsvs"
+				description="">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				<option value="-1">Disable completely</option>
+			</field>
+
+			<field name="forceSCSSUtf8GhsvsSpacer" type="note"
+				label="SCSS-Kompliierung: UTF-8 forcieren?"
+				description="" />
+
+			<field name="forceSCSSUtf8Ghsvs" type="list" default="0" filter="integer"
+				label="[forceSCSSUtf8Ghsvs]"
+				description="">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+
+		</fieldset>
+  </fields>
+ </config>
+</extension>

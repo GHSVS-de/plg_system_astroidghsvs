@@ -1,0 +1,53 @@
+{
+	"name": "plg_system_astroidghsvs",
+	"version": "2021.01.14",
+	"minimumPhp": "7.3.0",
+	"maximumPhp": "",
+	"minimumJoomla": "3.9.24",
+	"maximumJoomla": "",
+	"allowDowngrades": "1",
+	"creationDate": "2021-01-12",
+	"licenseLong": "GNU General Public License version 3 or later; see LICENSE.txt.",
+	"copyright": "(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)",
+	"author": {
+		"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
+		"email": "",
+		"url": "https://www.ghsvs.de"
+	},
+	"contributors": [
+		{
+			"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
+			"email": "",
+			"url": "https://www.ghsvs.de"
+		}
+	],
+	"bugs": "https://github.com/GHSVS-de/plg_system_astroidghsvs/issues",
+	"homepage": "https://github.com/GHSVS-de/plg_system_astroidghsvs#readme",
+	"keywords": [
+		"joomla",
+		"system plugin",
+		"Astroid Framework"
+	],
+	"private": false,
+	"description": "Joomla system plugin to support templates based on the Astroid framework. For example, for more controllable SCSS compilation.",
+	"license": "GPL-3.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GHSVS-de/plg_system_astroidghsvs.git"
+	},
+	"scripts": {
+		"g-build": "node build.js",
+		"g-npm-update-check": "ncu",
+		"g-ncu-override-json": "ncu -u"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"adm-zip": "0.5.1",
+		"commander": "^6.2.1",
+		"fs-extra": "9.0.1",
+		"rimraf": "3.0.2"
+	},
+	"peerDependencies": {},
+	"browserslist": []
+}
