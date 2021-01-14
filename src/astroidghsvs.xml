@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="plugin" group="system" method="upgrade">
- <name>PLG_SYSTEM_ASTROIDGHSVS</name>
- <author>G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</author>
- <creationDate>2021-01-12</creationDate>
- <copyright>(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</copyright>
- <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
- <authorUrl>https://www.ghsvs.de</authorUrl>
- <version>2021.01.12</version>
-    <versionHistory>
+	<name>{{nameUpper}}</name>
+	<author>{{authorName}}</author>
+	<creationDate>{{creationDate}}</creationDate>
+	<copyright>{{copyright}}</copyright>
+	<license>{{licenseLong}}</license>
+	<authorUrl>{{authorUrl}}</authorUrl>
+	<version>{{version}}</version>
+	<versionHistory>
 2021.01.12:
 - schraefl-bedachungen.eu, Coax-Template
     </versionHistory>
- <description>PLG_SYSTEM_ASTROIDGHSVS_XML_DESCRIPTION</description>
+ 	<description>{{nameUpper}}_DESC</description>
 
-	<updateservers>
-		<server type="extension" priority="1" name="PLG_SYSTEM_ASTROIDGHSVS">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml</server>
-	</updateservers>
+	<updateservers><server type="extension" priority="1" name="{{nameUpper}}">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-update.xml</server></updateservers>
 
- <files>
-  <filename plugin="astroidghsvs">astroidghsvs.php</filename>
-  <filename>LICENSE.txt</filename>
-  <folder>language</folder>
- </files>
+	<!-- <changelogurl>
+		https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-changelog.xml
+	</changelogurl>
+
+	<infourl>https://updates.ghsvs.de/changelog.php?file={{name}}</infourl> -->
+
+	<scriptfile>installerScript.php</scriptfile>
+	<minimumPhp>{{minimumPhp}}</minimumPhp>
+	<maximumPhp>{{maximumPhp}}</maximumPhp>
+	<minimumJoomla>{{minimumJoomla}}</minimumJoomla>
+	<maximumJoomla>{{maximumJoomla}}</maximumJoomla>
+	<allowDowngrades>{{allowDowngrades}}</allowDowngrades>
+	<!--Comma separated. No spaces:-->
+	<databaseServerType></databaseServerType>
+
+	<files>
+		<filename plugin="{{filename}}">{{filename}}.php</filename>
+		<filename>installerScript.php</filename>
+		<filename>LICENSE.txt</filename>
+		<folder>language</folder>
+		<folder>vendor</folder>
+		<folder>versions-installed</folder>
+	</files>
 
  <config>
   <fields name="params">
@@ -29,6 +45,18 @@
     <field type="hidden" default="1" name="astroidghsvsplugin" />
    </fieldset>
 		<fieldset name="Einstellungen" label="Einstellungen">
+
+			<field name="loadScssPhpEarlySpacer" type="note"
+				label="Load ScssPhp early?"
+				description="The plugin tries to establish it's ScssPHP class earlier than other extensions (e.g. Astroid Framework) by firing the composer autoloader.php. It's not guaranteed that it's possible to do so if any other extension did load the class earlier. Sometimes reordering of system plugins (this one first) can help." />
+
+			<field name="loadScssPhpEarly" type="list" default="0" filter="integer"
+				label="Load ScssPhp early"
+				description="">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+
 			<field name="forceSCSSCompilingGhsvsSpacer" type="note"
 				label="forceSCSSCompilingGhsvs"
 				description="Wird nur im Frontend berücksichtigt, wenn Template entsprechend vorbereitet ist. JA: EIGENE Astroid-SCSS-Kompilierung forcieren (= immer SCSS kompilieren). Nicht im Echtbetrieb aktivieren! Verlangsamt die Seite u.U. sehr! Einstellung NEIN bedeutet, der TemplateHelper prüft, ob Neukompilierung notwendig." />

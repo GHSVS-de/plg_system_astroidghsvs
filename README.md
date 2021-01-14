@@ -2,16 +2,19 @@
 
 # plg_system_astroidghsvs
 
+Don't use it if you don't need it. Needs some skills and knowledge.
+
 Helper plugin for ghsvs.de for Astroid Framework templates (since 2.4.7).
 
 1) Compile SCSS with "scssphp/scssphp" library packed with this plugin instead of the library that is packed with Astroid Framework. That library was not up-to-date enough for my needs. Errors and could not generate CSS SourceMaps.
 
 2) Helps to compile SCSS independently of the Astroid framework. Separate SCSS folders, separate SCSS structure. However, the template must be prepared accordingly (own helper classes/methods, overrides and so on).
 
-Don't use it if you don't need it. Needs some skills and knowlage.
-
 ## npm/composer. Create new Joomla extension installation package
-- Clone repository into your server environment (WSL or whatever).
+
+- Only tested with WSL 1/Win10 64
+
+- Clone repository into your server environment.
 
 - `cd /mnt/z/git-kram/plg_system_astroidghsvs`
 

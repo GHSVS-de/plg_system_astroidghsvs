@@ -8,6 +8,7 @@ const {
 	author,
 	creationDate,
 	copyright,
+	filename,
 	name,
 	version,
 	licenseLong,
@@ -34,8 +35,6 @@ Program
 	const firstCleanOuts = [
 		`./package`,
 		`./dist`,
-		"./src/media/fontawesome-free",
-		"./src/media/scss/bootstrap",
 		"./src/versions-installed"
 	];
 
@@ -58,6 +57,14 @@ Program
 		"./src/versions-installed/composer_installed.json"
 		// ,
 		// {overwrite:false, errorOnExist:true}
+	);
+
+	await rimRaf('./src/vendor/bin').then(
+		answer => console.log(`rimrafed: ./src/vendor/bin`)
+	);
+
+	await rimRaf('./src/vendor/scssphp/scssphp/bin').then(
+		answer => console.log(`rimrafed: /src/vendor/scssphp/scssphp/bin`)
 	);
 
 	// Copy and create new work dir.
@@ -89,6 +96,7 @@ Program
 	xml = xml.replace(/{{minimumJoomla}}/g, minimumJoomla);
 	xml = xml.replace(/{{maximumJoomla}}/g, maximumJoomla);
 	xml = xml.replace(/{{allowDowngrades}}/g, allowDowngrades);
+	xml = xml.replace(/{{filename}}/g, filename);
 
 	await fse.writeFile(Manifest, xml, { encoding: "utf8" }
 	).then(
