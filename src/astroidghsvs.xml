@@ -11,7 +11,7 @@
 2021.01.12:
 - schraefl-bedachungen.eu, Coax-Template
     </versionHistory>
- 	<description>{{nameUpper}}_DESC</description>
+ 	<description>{{nameUpper}}_XML_DESCRIPTION</description>
 
 	<updateservers><server type="extension" priority="1" name="{{nameUpper}}">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-update.xml</server></updateservers>
 
