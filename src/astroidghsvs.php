@@ -60,20 +60,24 @@ class PlgSystemastroidghsvs extends CMSPlugin
 
 			if (file_exists($templateDirAbs . '/helper.php'))
 			{
-				 JLoader::register('AstroidTemplateHelper', $templateDirAbs . '/helper.php');
+				JLoader::register('AstroidTemplateHelper', $templateDirAbs . '/helper.php');
 			}
 			else
 			{
 				return;
 			}
 
-			$document = Astroid\Framework::getDocument();
+			if (method_exists('AstroidTemplateHelper', 'runScssGhsvs'))
+			{
+				$document = Astroid\Framework::getDocument();
 
-			// Wird für eigenes Compiling benötigt und deshalb hier abgerufen.
-			$renderedCSS = $document->renderCss();
+				// Wird für eigenes Compiling benötigt und deshalb hier abgerufen, nachdem das Template
+				// durch Astroid bereits gerendert ist..
+				$renderedCSS = $document->renderCss();
 
-			// Und übergeben an eigenes Compiling via AstroidTemplateHelper.
-			$css = AstroidTemplateHelper::runScssGhsvs($renderedCSS);
+				// Und übergeben an eigenes Compiling via AstroidTemplateHelper.
+				$css = AstroidTemplateHelper::runScssGhsvs($renderedCSS);
+			}
 		}
 	}
 
