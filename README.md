@@ -22,6 +22,8 @@ Helper plugin for ghsvs.de for Astroid Framework templates (since 2.4.7).
 
 - Check also versions of dependencies, devDependencies in `/package.json`: `npm run g-npm-update-check` and `npm run g-ncu-override-json`
 
+- - **You shouldn't bump composer to 7+ as long build.js is not fixed accordingly.** See https://github.com/GHSVS-de/plg_system_bs3ghsvs/blob/2021.01.15/build.js#L24-L38
+
 - Check/adapt versions in `/src/composer.json`. Something to bump in `vendor/`?
 
 ```
@@ -66,7 +68,7 @@ OR
 
 ### Build new Joomla package ZIP.
 
-- May be necessary: `nvm use 12` or `nvm use 13` to get rid of f'ing messages of NodeJs 14+ that nobody understands but the Node creators and JS professors.
+- <strike>May be necessary: `nvm use 12` or `nvm use 13` to get rid of f'ing messages of NodeJs 14+ that nobody understands but the Node creators and JS professors.</strike>
 
 - `node build.js`
 

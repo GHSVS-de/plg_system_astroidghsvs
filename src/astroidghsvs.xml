@@ -34,6 +34,7 @@
 		<filename plugin="{{filename}}">{{filename}}.php</filename>
 		<filename>installerScript.php</filename>
 		<filename>LICENSE.txt</filename>
+		<folder>exampleScaffold</folder>
 		<folder>language</folder>
 		<folder>vendor</folder>
 		<folder>versions-installed</folder>
