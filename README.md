@@ -10,6 +10,8 @@ Helper plugin for ghsvs.de for Astroid Framework templates (since 2.4.7).
 
 2) Helps to compile SCSS independently of the Astroid framework. Separate SCSS folders, separate SCSS structure. However, the template must be prepared accordingly (own helper classes/methods, overrides and so on).
 
+3) Can be used for other templates as well, just to have the feature of having SCSSPhp available in latest version.
+
 ## npm/composer. Create new Joomla extension installation package
 
 - Only tested with WSL 1/Win10 64
