@@ -19,9 +19,9 @@ const {
 	allowDowngrades,
 } = require("./package.json");
 
-const Program = require('commander');
+const program = require('commander');
 
-Program
+program
   .version(version)
   .on('--help', () => {
     // eslint-disable-next-line no-console
@@ -29,6 +29,8 @@ Program
     process.exit(0);
   })
   .parse(process.argv);
+
+const Program = program.opts();
 
 (async function exec()
 {
