@@ -93,6 +93,8 @@ class AstroidTemplateHelper
 	 */
 	protected static $cssFolderAbs;
 
+	protected static $mediaVersion;
+
 	/**
 	* Kompiliere eigene CSS-Dateien wie template.css, die dann in's Template
 	* <head> eingebunden werden oder nicht eingebunden werden, wenn in
@@ -107,10 +109,11 @@ class AstroidTemplateHelper
 	public static function runScssGhsvs($renderedCSS)
 	{
 		$app = Factory::getApplication();
-
 		// Um Fehlerseite scssError.php ohne Endlos-Loop ausgeben zu können.
-		if ($app->input->get('noScssCompilation') == 1)
-		{
+		if (
+			$app->input->get('noScssCompilation') == 1
+			|| !(self::$pluginParams instanceof \Joomla\Registry\Registry)
+		){
 			return;
 		}
 
@@ -183,13 +186,15 @@ class AstroidTemplateHelper
 		//  not?
 
 		// Create hash file name. Is indicator if settings have been changed.
-		$ghsvsHashFile =
-			'ghsvsHash-' . $template->id . '_' . md5(
+		self::$mediaVersion = $template->id . '_' . md5(
 				serialize(self::$compileSettings)
 				. serialize($template)
 				. serialize($collect)
 				. serialize(self::$pluginParams->toArray())
-			) . '_' . $template->hash . '.ghsvsHash';
+			) . '_' . $template->hash;
+
+		$ghsvsHashFile =
+			'ghsvsHash-' . self::$mediaVersion . '.ghsvsHash';
 
 		if (!is_file(self::$cssFolderAbs . '/' . $ghsvsHashFile))
 		{
@@ -205,7 +210,7 @@ class AstroidTemplateHelper
 			*/
 
 			$styles = Folder::files(
-				$cssFolderAbs,
+				self::$cssFolderAbs,
 				'^ghsvsHash-' . $template->id  . '_',
 				true,
 				true
@@ -213,7 +218,7 @@ class AstroidTemplateHelper
 
 			foreach ($styles as $style)
 			{
-				unlink(self::$cssFolderAbs . '/' . $style);
+				unlink($style);
 			}
 		}
 		else
@@ -390,7 +395,7 @@ class AstroidTemplateHelper
 			}
 			else
 			{
-				$href .= '.min.css';
+				$href .= '.min.css?' . self::$mediaVersion;
 			}
 
 			self::$replaceWith .= '<link href="' . $href

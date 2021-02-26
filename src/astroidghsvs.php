@@ -3,7 +3,13 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Plugin\CMSPlugin;
 
-JLoader::registerNamespace('Astroid', JPATH_LIBRARIES . '/astroid/framework/library/astroid', false, false, 'psr4');
+if (is_dir(JPATH_LIBRARIES . '/astroid/framework/library/astroid'))
+{
+	JLoader::registerNamespace('Astroid',
+		JPATH_LIBRARIES . '/astroid/framework/library/astroid',
+		false, false, 'psr4'
+	);
+}
 
 class PlgSystemastroidghsvs extends CMSPlugin
 {
@@ -16,13 +22,15 @@ class PlgSystemastroidghsvs extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
-		// Lade bzw. registriere Namespaces für ScssPHP früh. Keine Garantie, dass das klappt.
+		// Lade bzw. registriere Namespaces für ScssPHP früh. Keine Garantie,
+		//  dass das klappt.
 		if (
 			$this->params->get('loadScssPhpEarly', 0) === 1
 			&& $this->app->isClient('site')
 		){
-			// Leider funktioniert das nicht im Zusammenspiel mit Astroid-Template.
-			// da das derzeit autoloader nicht verwendet(?)
+			// Leider funktioniert das nicht im Zusammenspiel mit
+			// Astroid-Template. da das derzeit autoloader für SCSSPHP nicht
+			// verwendet(?)
 			require_once __DIR__ . '/vendor/autoload.php';
 
 			// Also fieser "Trick". Block loading via "require_once scss.inc.php".
@@ -58,52 +66,26 @@ class PlgSystemastroidghsvs extends CMSPlugin
 			$templateDir = 'templates/' . $template->template;
 			$templateDirAbs = JPATH_SITE . '/' . $templateDir;
 
-			if (file_exists($templateDirAbs . '/helper.php'))
-			{
-				JLoader::register('AstroidTemplateHelper', $templateDirAbs . '/helper.php');
-			}
-			else
+			if (!file_exists($templateDirAbs . '/helper.php'))
 			{
 				return;
 			}
+
+			JLoader::register('AstroidTemplateHelper',
+				$templateDirAbs . '/helper.php'
+			);
 
 			if (method_exists('AstroidTemplateHelper', 'runScssGhsvs'))
 			{
 				$document = Astroid\Framework::getDocument();
 
-				// Wird für eigenes Compiling benötigt und deshalb hier abgerufen, nachdem das Template
-				// durch Astroid bereits gerendert ist..
+				// $renderedCSS Wird für eigenes Compiling benötigt und deshalb
+				//  hier abgerufen, nachdem das Template durch Astroid bereits
+				//  gerendert ist..
 				$renderedCSS = $document->renderCss();
 
 				// Und übergeben an eigenes Compiling via AstroidTemplateHelper.
 				$css = AstroidTemplateHelper::runScssGhsvs($renderedCSS);
-			}
-		}
-	}
-
-	/**
-	* Unfertig!!! Da ich eigene CSS verwenden will, können hiermit
-	* die compiled-*.css gelöscht werden.
-	*/
-	public function onAfterInitialise()
-	{
-		return;
-
-		if (
-			$this->app->isClient('administrator')
-			|| $this->params->get('deleteAstroidCss', 0) === 0)
-		{
-			return;
-		}
-
-		$cssFolder = JPATH_SITE . '/' . $this->params->get('cssFolder', 'templates/kujm/css');
-		$cssFiles = Folder::files($cssFolder, '.css$', false, false);
-
-		foreach ($cssFiles as $file)
-		{
-			if (strpos($file, 'compiled-') === 0)
-			{
-				File::delete($cssFolder . '/' . $file);
 			}
 		}
 	}
