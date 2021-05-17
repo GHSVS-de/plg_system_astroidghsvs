@@ -19,6 +19,22 @@ const {
 	allowDowngrades,
 } = require("./package.json");
 
+let scssphpVersion = '';
+const {
+	packages,
+} = require("./src/vendor/composer/installed.json");
+
+packages.forEach((package) => {
+	if (package.name === 'scssphp/scssphp')
+	{
+		// console.log(package.version_normalized);
+		scssphpVersion = package.version_normalized;
+	}
+	// console.log(package.name);
+});
+
+console.log(`scssphpVersion identified as: ${scssphpVersion}`);
+
 const program = require('commander');
 
 program
@@ -111,7 +127,9 @@ const Program = program.opts();
 	fse.unlinkSync("./package/composer.lock");
 
 	// Package it
+	const zipFilename = `${name}-${version}_${scssphpVersion}.zip`;
 	const zip = new (require("adm-zip"))();
 	zip.addLocalFolder("package", false);
-	zip.writeZip(`dist/${name}-${version}.zip`);
+	zip.writeZip(`dist/${zipFilename}`);
+	console.log(`${zipFilename} written. Finish.`);
 })();

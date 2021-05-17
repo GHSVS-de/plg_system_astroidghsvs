@@ -5,12 +5,15 @@
 Don't use it if you don't need it. Needs some skills and knowledge.
 
 Helper plugin for ghsvs.de for Astroid Framework templates (since 2.4.7).
+And other templates that want to use the on-the-fly feature to compile SCSS via scssphp/scssphp library.
 
-1) Compile SCSS with "scssphp/scssphp" library packed with this plugin instead of the library that is packed with Astroid Framework. That library was not up-to-date enough for my needs. Errors and could not generate CSS SourceMaps.
+1) Compile SCSS with "scssphp/scssphp" library packed with this plugin instead of the library that is packed with Astroid Framework. That library was not up-to-date enough for my needs.
 
-2) Helps to compile SCSS independently of the Astroid framework. Separate SCSS folders, separate SCSS structure. However, the template must be prepared accordingly (own helper classes/methods, overrides and so on).
+2) Create .css and .min.css files. Create sourcemaps.
 
-3) Can be used for other templates as well, just to have the feature of having SCSSPhp available in latest version.
+3) Helps to compile SCSS independently of the Astroid framework. Separate SCSS folders, separate SCSS structure. However, the template index.php code must be prepared accordingly (special overrides and so on).
+
+4) Can be used for other templates as well, just to have the feature of having SCSSPhp available in latest version. But also for on-the-fly compilation. The template index.php code must be prepared accordingly (special overrides and so on).
 
 ## npm/composer. Create new Joomla extension installation package
 
