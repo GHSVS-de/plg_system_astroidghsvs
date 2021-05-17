@@ -11,12 +11,16 @@ if (is_dir(JPATH_LIBRARIES . '/astroid/framework/library/astroid'))
 	);
 }
 
-class PlgSystemastroidghsvs extends CMSPlugin
+class PlgSystemAstroidGhsvs extends CMSPlugin
 {
 	protected $app;
 
 	// media/ path
 	##protected static $basepath = 'plg_system_astroidghsvs';
+
+	/* for public static getter function. Via
+		PlgSystemAstroidGhsvs::getPluginParams. */
+	protected static $plgParams;
 
 	function __construct(&$subject, $config = array())
 	{
@@ -40,6 +44,9 @@ class PlgSystemastroidghsvs extends CMSPlugin
 				include_once __DIR__ . '/vendor/scssphp/scssphp/src/Version.php';
 			}
 		}
+
+		// For getter method from outside.
+		static::$plgParams = $this->params;
 	}
 
 	public function onBeforeAstroidRender()
@@ -88,5 +95,14 @@ class PlgSystemastroidghsvs extends CMSPlugin
 				$css = AstroidTemplateHelper::runScssGhsvs($renderedCSS);
 			}
 		}
+	}
+
+	/**
+	 * Getter for parameters of this plugin via PlgSystemAstroidGhsvs::getPluginParams()
+	 *
+	 */
+	public static function getPluginParams()
+	{
+		return static::$plgParams;
 	}
 }

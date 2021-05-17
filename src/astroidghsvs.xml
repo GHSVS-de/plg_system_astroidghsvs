@@ -27,7 +27,7 @@
 	<minimumJoomla>{{minimumJoomla}}</minimumJoomla>
 	<maximumJoomla>{{maximumJoomla}}</maximumJoomla>
 	<allowDowngrades>{{allowDowngrades}}</allowDowngrades>
-	<!--Comma separated. No spaces:-->
+	<!--Comma separated. No spaces. Das ist eine Erfindung von mir! Nicht Joomla core. Und habe ich auch nicht in script.php, weil irgendwas nicht klappte.-->
 	<databaseServerType></databaseServerType>
 
 	<files>
@@ -48,25 +48,65 @@
 		<fieldset name="Einstellungen" label="Einstellungen">
 
 			<field name="loadScssPhpEarlySpacer" type="note"
-				label="Load ScssPhp early?"
-				description="The plugin tries to establish it's ScssPHP class earlier than other extensions (e.g. Astroid Framework) by firing the composer autoloader.php. It's not guaranteed that it's possible to do so if any other extension did load the class earlier. Sometimes reordering of system plugins (this one first) can help." />
+				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY"
+				description="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY_DESC" />
 
 			<field name="loadScssPhpEarly" type="list" default="0" filter="integer"
-				label="Load ScssPhp early"
-				description="">
+				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 			</field>
 
+			<field name="placeHolderModeSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE"
+				description="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE_DESC" />
+
+			<field name="placeHolderMode" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+			</field>
+
+			<field name="includeStyleIdSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID"
+				description="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID_DESC" />
+
+			<field name="includeStyleId" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+			</field>
+
+			<field name="scssFolderSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER"
+				description="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER_DESC" />
+
+			<field name="scssFolder" type="list" default="scss-ghsvs" filter="string"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER">
+					<option value="scss-ghsvs">scss-ghsvs</option>
+					<option value="scss">scss</option>
+			</field>
+
 			<field name="forceSCSSCompilingGhsvsSpacer" type="note"
-				label="forceSCSSCompilingGhsvs"
-				description="Wird nur im Frontend berücksichtigt, wenn Template entsprechend vorbereitet ist. JA: EIGENE Astroid-SCSS-Kompilierung forcieren (= immer SCSS kompilieren). Nicht im Echtbetrieb aktivieren! Verlangsamt die Seite u.U. sehr! Einstellung NEIN bedeutet, der TemplateHelper prüft, ob Neukompilierung notwendig." />
+				label="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS"
+				description="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS_DESC"/>
+
 			<field name="forceSCSSCompilingGhsvs" type="list" default="0" filter="integer"
-				label="forceSCSSCompilingGhsvs"
+				label="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS"
 				description="">
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 				<option value="-1">Disable completely</option>
+			</field>
+
+			<field name="sourceMapsSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS"
+				description="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS_DESC" />
+
+			<field name="sourceMaps" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
 
 			<field name="forceSCSSUtf8GhsvsSpacer" type="note"

@@ -16,6 +16,8 @@ class plgSystemAstroidGhsvsInstallerScript extends InstallerScript
 	 * @since  2.0
 	 */
 	protected $deleteFiles = array(
+		'/plugins/system/astroidghsvs/exampleScaffold/helper.php',
+		'/plugins/system/astroidghsvs/exampleScaffold/index.php',
 	);
 
 	/**
