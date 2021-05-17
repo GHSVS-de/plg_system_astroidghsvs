@@ -328,7 +328,6 @@ class AstroidGhsvsHelper
 
 		if ($force === 1)
 		{
-echo ' 4654sd48sa7d98sD81s8d71dsa COMPILINGE <pre>' . print_r($force, true) . '</pre>';#exit;
 			try
 			{
 				ini_set('memory_limit', '1024M');
