@@ -36,6 +36,7 @@
 		<filename>LICENSE.txt</filename>
 		<folder>exampleScaffold</folder>
 		<folder>language</folder>
+		<folder>src</folder>
 		<folder>vendor</folder>
 		<folder>versions-installed</folder>
 	</files>
