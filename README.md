@@ -27,7 +27,7 @@ And other templates that want to use the on-the-fly feature to compile SCSS via 
 
 - Check also versions of dependencies, devDependencies in `/package.json`: `npm run g-npm-update-check` and `npm run g-ncu-override-json`
 
-- - **You shouldn't bump composer to 7+ as long build.js is not fixed accordingly.** See https://github.com/GHSVS-de/plg_system_bs3ghsvs/blob/2021.01.15/build.js#L24-L38
+- - <strike>**You shouldn't bump composer to 7+ as long build.js is not fixed accordingly.** See https://github.com/GHSVS-de/plg_system_bs3ghsvs/blob/2021.01.15/build.js#L24-L38 </strike>
 
 - Check/adapt versions in `/src/composer.json`. Something to bump in `vendor/`?
 
