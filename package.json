@@ -1,7 +1,7 @@
 {
 	"name": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2021.05.17",
+	"version": "2021.06.09",
 	"minimumPhp": "7.3.0",
 	"maximumPhp": "8.99999.99999",
 	"minimumJoomla": "3.9.24",
@@ -42,7 +42,7 @@
 		"g-ncu-override-json": "ncu -u"
 	},
 	"dependencies": {
-		"npm-check-updates": "^11.5.13"
+		"npm-check-updates": "^11.6.0"
 	},
 	"devDependencies": {
 		"adm-zip": "0.5.5",
