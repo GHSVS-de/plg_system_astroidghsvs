@@ -70,19 +70,11 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 			// Wohl gar nicht nötig. Paranoia.
 			&& $template->isAstroid
 		){
-			$templateDir = 'templates/' . $template->template;
-			$templateDirAbs = JPATH_SITE . '/' . $templateDir;
-
-			if (!file_exists($templateDirAbs . '/helper.php'))
-			{
-				return;
-			}
-
-			JLoader::register('AstroidTemplateHelper',
-				$templateDirAbs . '/helper.php'
+			JLoader::register('AstroidGhsvsHelper',
+				__DIR__ . '/src/Helper/AstroidGhsvsHelper.php'
 			);
 
-			if (method_exists('AstroidTemplateHelper', 'runScssGhsvs'))
+			if (method_exists('AstroidGhsvsHelper', 'runScssGhsvs'))
 			{
 				$document = Astroid\Framework::getDocument();
 
@@ -92,7 +84,7 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 				$renderedCSS = $document->renderCss();
 
 				// Und übergeben an eigenes Compiling via AstroidTemplateHelper.
-				$css = AstroidTemplateHelper::runScssGhsvs($renderedCSS);
+				$css = AstroidGhsvsHelper::runScssGhsvs($renderedCSS);
 			}
 		}
 	}

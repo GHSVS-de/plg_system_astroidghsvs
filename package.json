@@ -1,7 +1,7 @@
 {
 	"name": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2021.06.09",
+	"version": "2021.06.10",
 	"minimumPhp": "7.3.0",
 	"maximumPhp": "8.99999.99999",
 	"minimumJoomla": "3.9.24",
