@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'b4257adb5faff608506d655415e364101b912f5c',
+    'reference' => 'f74841e839d6969b2b373d02892ea9e8b21412da',
     'name' => '__root__',
   ),
   'versions' => 
@@ -31,16 +31,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'b4257adb5faff608506d655415e364101b912f5c',
+      'reference' => 'f74841e839d6969b2b373d02892ea9e8b21412da',
     ),
     'scssphp/scssphp' => 
     array (
-      'pretty_version' => 'v1.5.2',
-      'version' => '1.5.2.0',
+      'pretty_version' => 'v1.6.0',
+      'version' => '1.6.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6fe16f169f55f5e793474fb210aac0a4481619e5',
+      'reference' => 'b83594e2323c5d6e80785df3f91b9d1d32aad530',
     ),
   ),
 );
