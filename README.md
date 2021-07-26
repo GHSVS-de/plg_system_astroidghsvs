@@ -1,13 +1,12 @@
-# WORK IN PROGRESS!
-
 # plg_system_astroidghsvs
 
-Don't use it if you don't need it. Needs some skills and knowledge.
+- Don't use it if you don't need it. Needs some skills and background knowledge.
+- Helper plugin for ghsvs.de for Astroid Framework (since 2.4.7) templates.
+- And other templates that want to use the on-the-fly feature to compile SCSS via scssphp/scssphp library.
+- Or if you want to use the included library [scssphp/scssphp](https://github.com/scssphp/scssphp) elsewhere and load it early.
 
-Helper plugin for ghsvs.de for Astroid Framework templates (since 2.4.7).
-And other templates that want to use the on-the-fly feature to compile SCSS via scssphp/scssphp library.
 
-1) Compile SCSS with "scssphp/scssphp" library packed with this plugin instead of the library that is packed with Astroid Framework. That library was not up-to-date enough for my needs.
+1) Compile SCSS with the library "scssphp/scssphp" included in this plugin instead of the library packed with Astroid Framework (this library was not up-to-date enough for my needs and is updated too rarely)..
 
 2) Create .css and .min.css files. Create sourcemaps.
 

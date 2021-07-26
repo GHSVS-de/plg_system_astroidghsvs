@@ -15,9 +15,7 @@
 
 	<updateservers><server type="extension" priority="1" name="{{nameUpper}}">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-update.xml</server></updateservers>
 
-	<!-- <changelogurl>
-		https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-changelog.xml
-	</changelogurl>
+	<!-- <changelogurl>https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-changelog.xml</changelogurl>
 
 	<infourl>https://updates.ghsvs.de/changelog.php?file={{name}}</infourl> -->
 
