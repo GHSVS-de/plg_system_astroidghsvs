@@ -34,7 +34,6 @@
 		<folder>language</folder>
 		<folder>src</folder>
 		<folder>vendor</folder>
-		<folder>versions-installed</folder>
 	</files>
 
  <config>
