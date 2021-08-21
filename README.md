@@ -26,7 +26,7 @@
 - `npm install` (if needed)
 
 ## Composer updates/installation
-- Check/adapt versions in `/src/composer.json`. Something to bump in `vendor/`?
+- Check/adapt versions in `./_composer/composer.json`. Something to bump in `vendor/`?
 
 ```
 cd _composer/
@@ -39,10 +39,10 @@ composer show -l
 ```
 - both commands accept the parameter `--direct` to show only direct dependencies in the listing
 
-### Automatically "download" PHP packages into `/src/vendor/`
+### Automatically "download" PHP packages into `./_composer/vendor/`
 
 ```
-cd src/
+cd _composer/
 composer install
 ```
 
@@ -50,35 +50,16 @@ OR
 (whenever libraries in vendor/ shall be updated)
 
 ```
-cd src/
+cd _composer/
 composer update
 ```
 
-### Automatically "download" JS/CSS packages into `/node_modules`
-
-- I you want to check first: `npm run g-npm-update-check`
-
-- If you want to adapt package.json automatically first: `npm run g-ncu-override-json`
-
-
-- `cd ..`
-- `npm install`
-
-OR
-
-- `npm update`
-
-### Build new Joomla package ZIP.
-
-- <strike>May be necessary: `nvm use 12` or `nvm use 13` to get rid of f'ing messages of NodeJs 14+ that nobody understands but the Node creators and JS professors.</strike>
-
+## Build installable ZIP package
 - `node build.js`
+- New, installable ZIP is in `./dist` afterwards.
+- All packed files for this ZIP can be seen in `./package`. **But only if you disable deletion of this folder at the end of `build.js`**.
 
-#####
-- New, installable ZIP is in `/dist/` afterwards.
-
-- FYI: Packed files for this ZIP can be seen in `/package/`.
-
-#### For Joomla update server
+### For Joomla update and changelog server
 - Create new release with new tag.
-- Get download link for new `dist/plg_blahaba_blubber...zip` **inside new tag branch** and add to release description and update the update XML.
+- - See release description in `dist/release.txt`.
+- Extracts(!) of the update and changelog XML for update and changelog servers are in `./dist` as well. Copy/paste and make necessary additions.
