@@ -14,24 +14,22 @@
 
 4) Can be used for other templates as well, just to have the feature of having SCSSPhp available in latest version. But also for on-the-fly compilation. The template index.php code must be prepared accordingly (special overrides and so on).
 
-## npm/composer. Create new Joomla extension installation package
+-----------------------------------------------------
 
-- Only tested with WSL 1/Win10 64
-
-- Clone repository into your server environment.
-
+# My personal build procedure (WSL 1, Debian, Win 10)
+- Prepare/adapt `./package.json`.
 - `cd /mnt/z/git-kram/plg_system_astroidghsvs`
 
-- Check/edit `/package.json` and add plugin `version` and further settings like `minimumPhp` and so on. Will be copied during build process into manifest XML.
+## node/npm updates/installation
+- `npm run g-npm-update-check` or (faster) `ncu`
+- `npm run g-ncu-override-json` (if needed) or (faster) `ncu -u`
+- `npm install` (if needed)
 
-- Check also versions of dependencies, devDependencies in `/package.json`: `npm run g-npm-update-check` and `npm run g-ncu-override-json`
-
-- - <strike>**You shouldn't bump composer to 7+ as long build.js is not fixed accordingly.** See https://github.com/GHSVS-de/plg_system_bs3ghsvs/blob/2021.01.15/build.js#L24-L38 </strike>
-
+## Composer updates/installation
 - Check/adapt versions in `/src/composer.json`. Something to bump in `vendor/`?
 
 ```
-cd src/
+cd _composer/
 
 composer outdated
 
