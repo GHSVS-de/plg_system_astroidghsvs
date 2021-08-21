@@ -1,11 +1,9 @@
 <?php
 defined('_JEXEC') or die;
 
-#use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Log\Log;
-#use Joomla\CMS\Language\Text;
 
 class plgSystemAstroidGhsvsInstallerScript extends InstallerScript
 {
@@ -15,10 +13,10 @@ class plgSystemAstroidGhsvsInstallerScript extends InstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $deleteFiles = array(
+	protected $deleteFiles = [
 		'/plugins/system/astroidghsvs/exampleScaffold/helper.php',
 		'/plugins/system/astroidghsvs/exampleScaffold/index.php',
-	);
+	];
 
 	/**
 	 * A list of folders to be deleted with method removeFiles().
@@ -26,8 +24,9 @@ class plgSystemAstroidGhsvsInstallerScript extends InstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $deleteFolders = array(
-	);
+	protected $deleteFolders = [
+		'/plugins/system/astroidghsvs/versions-installed',
+	];
 
 	public function preflight($type, $parent)
 	{

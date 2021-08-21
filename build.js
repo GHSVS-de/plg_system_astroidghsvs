@@ -1,135 +1,119 @@
 const fse = require('fs-extra');
+const path = require('path');
 const util = require("util");
 const rimRaf = util.promisify(require("rimraf"));
-
-const Manifest = "./package/astroidghsvs.xml";
+const chalk = require('chalk');
+const replaceXml = require('./build/replaceXml.js');
+const helper = require('./build/helper.js');
 
 const {
-	author,
-	creationDate,
-	copyright,
-	filename,
 	name,
+	filename,
 	version,
-	licenseLong,
-	minimumPhp,
-	maximumPhp,
-	minimumJoomla,
-	maximumJoomla,
-	allowDowngrades,
 } = require("./package.json");
 
-let scssphpVersion = '';
-const {
-	packages,
-} = require("./src/vendor/composer/installed.json");
+const manifestFileName = `${filename}.xml`;
+const Manifest = `${__dirname}/package/${manifestFileName}`;
+const vendorPath = `./_composer/vendor`;
 
-packages.forEach((package) => {
-	if (package.name === 'scssphp/scssphp')
-	{
-		// console.log(package.version_normalized);
-		scssphpVersion = package.version_normalized;
-	}
-	// console.log(package.name);
-});
-
-console.log(`scssphpVersion identified as: ${scssphpVersion}`);
-
-const program = require('commander');
-
-program
-  .version(version)
-  .on('--help', () => {
-    // eslint-disable-next-line no-console
-    console.log(`Version: ${version}`);
-    process.exit(0);
-  })
-  .parse(process.argv);
-
-const Program = program.opts();
+let versionSub = '';
 
 (async function exec()
 {
-	const firstCleanOuts = [
+	let cleanOuts = [
+		`./test1`,
 		`./package`,
 		`./dist`,
-		"./src/versions-installed"
+		`./src/versions-installed`,
+		`${vendorPath}/bin`,
+		`${vendorPath}/scssphp/scssphp/bin`,
 	];
 
-	for (const file of firstCleanOuts)
-	{
-		await rimRaf(file).then(
-			answer => console.log(`rimrafed: ${file}.`)
-		);
-	}
+	await helper.cleanOut(cleanOuts);
 
-	await fse.copy(
-		"./package-lock.json",
-		"./src/versions-installed/npm_package-lock.json"
+	versionSub = await helper.findVersionSub (
+		path.join(__dirname, vendorPath, `composer/installed.json`),
+			'scssphp/scssphp');
+	console.log(chalk.magentaBright(`versionSub identified as: "${versionSub}"`));
+
+	await console.log(chalk.redBright(`Be patient! Composer copy actions!`));
+	await fse.copy(`${vendorPath}`, `./package/vendor`
 	).then(
-		answer => console.log(`Copied ./package-lock.json.`)
+		answer => console.log(chalk.yellowBright(
+			`Copied "_composer/vendor" to "./package/vendor".`))
 	);
 
-	await fse.copy(
-		"./src/vendor/composer/installed.json",
-		"./src/versions-installed/composer_installed.json"
-		// ,
-		// {overwrite:false, errorOnExist:true}
-	);
-
-	await rimRaf('./src/vendor/bin').then(
-		answer => console.log(`rimrafed: ./src/vendor/bin`)
-	);
-
-	await rimRaf('./src/vendor/scssphp/scssphp/bin').then(
-		answer => console.log(`rimrafed: /src/vendor/scssphp/scssphp/bin`)
-	);
-
-	// Copy and create new work dir.
 	await fse.copy("./src", "./package"
 	).then(
-		answer => console.log(`Copied ./src to ./package.`)
+		answer => console.log(chalk.yellowBright(`Copied "./src" to "./package".`))
 	);
 
-	// Create new dist dir.
 	if (!(await fse.exists("./dist")))
 	{
     	await fse.mkdir("./dist"
 		).then(
-			answer => console.log(`Created ./dist.`)
+			answer => console.log(chalk.yellowBright(`Created "./dist".`))
 		);
-  	}
+  }
 
-	let xml = await fse.readFile(Manifest, { encoding: "utf8" });
-	xml = xml.replace(/{{name}}/g, name);
-	xml = xml.replace(/{{nameUpper}}/g, name.toUpperCase());
-	xml = xml.replace(/{{authorName}}/g, author.name);
-	xml = xml.replace(/{{creationDate}}/g, creationDate);
-	xml = xml.replace(/{{copyright}}/g, copyright);
-	xml = xml.replace(/{{licenseLong}}/g, licenseLong);
-	xml = xml.replace(/{{authorUrl}}/g, author.url);
-	xml = xml.replace(/{{version}}/g, version);
-	xml = xml.replace(/{{minimumPhp}}/g, minimumPhp);
-	xml = xml.replace(/{{maximumPhp}}/g, maximumPhp);
-	xml = xml.replace(/{{minimumJoomla}}/g, minimumJoomla);
-	xml = xml.replace(/{{maximumJoomla}}/g, maximumJoomla);
-	xml = xml.replace(/{{allowDowngrades}}/g, allowDowngrades);
-	xml = xml.replace(/{{filename}}/g, filename);
+	const zipFilename = `${name}-${version}_${versionSub}.zip`;
 
-	await fse.writeFile(Manifest, xml, { encoding: "utf8" }
-	).then(
-		answer => console.log(`Replaced entries in ${Manifest}.`)
-	);;
+	await replaceXml.main(Manifest, zipFilename);
+	await fse.copy(`${Manifest}`, `./dist/${manifestFileName}`).then(
+		answer => console.log(chalk.yellowBright(
+			`Copied "${manifestFileName}" to "./dist".`))
+	);
 
-	// HOUSE CLEANING
+	// Create zip file and detect checksum then.
+	const zipFilePath = `./dist/${zipFilename}`;
 
-	fse.unlinkSync("./package/composer.json");
-	fse.unlinkSync("./package/composer.lock");
-
-	// Package it
-	const zipFilename = `${name}-${version}_${scssphpVersion}.zip`;
-	const zip = new (require("adm-zip"))();
+	const zip = new (require('adm-zip'))();
 	zip.addLocalFolder("package", false);
-	zip.writeZip(`dist/${zipFilename}`);
-	console.log(`${zipFilename} written. Finish.`);
+	await zip.writeZip(`${zipFilePath}`);
+	console.log(chalk.cyanBright(chalk.bgRed(
+		`"./dist/${zipFilename}" written.`)));
+
+	const Digest = 'sha256'; //sha384, sha512
+	const checksum = await helper.getChecksum(zipFilePath, Digest)
+  .then(
+		hash => {
+			const tag = `<${Digest}>${hash}</${Digest}>`;
+			console.log(chalk.greenBright(`Checksum tag is: ${tag}`));
+			return tag;
+		}
+	)
+	.catch(error => {
+		console.log(error);
+		console.log(chalk.redBright(`Error while checksum creation. I won't set one!`));
+		return '';
+	});
+
+	let xmlFile = 'update.xml';
+	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
+		answer => console.log(chalk.yellowBright(
+			`Copied "${xmlFile}" to ./dist.`))
+	);
+	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
+
+	xmlFile = 'changelog.xml';
+	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
+		answer => console.log(chalk.yellowBright(
+			`Copied "${xmlFile}" to ./dist.`))
+	);
+	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
+
+	xmlFile = 'release.txt';
+	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
+		answer => console.log(chalk.yellowBright(
+			`Copied "${xmlFile}" to ./dist.`))
+	);
+	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
+
+	cleanOuts = [
+		`./package`,
+	];
+	await helper.cleanOut(cleanOuts).then(
+		answer => console.log(chalk.cyanBright(chalk.bgRed(
+			`Finished. Good bye!`)))
+	);
 })();

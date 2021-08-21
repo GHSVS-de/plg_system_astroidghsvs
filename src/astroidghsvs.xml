@@ -15,9 +15,9 @@
 
 	<updateservers><server type="extension" priority="1" name="{{nameUpper}}">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-update.xml</server></updateservers>
 
-	<!-- <changelogurl>https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-changelog.xml</changelogurl>
+	<changelogurl>https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/{{name}}-changelog.xml</changelogurl>
 
-	<infourl>https://updates.ghsvs.de/changelog.php?file={{name}}</infourl> -->
+	<infourl>https://updates.ghsvs.de/changelog.php?file={{name}}</infourl>
 
 	<scriptfile>installerScript.php</scriptfile>
 	<minimumPhp>{{minimumPhp}}</minimumPhp>
@@ -25,8 +25,6 @@
 	<minimumJoomla>{{minimumJoomla}}</minimumJoomla>
 	<maximumJoomla>{{maximumJoomla}}</maximumJoomla>
 	<allowDowngrades>{{allowDowngrades}}</allowDowngrades>
-	<!--Comma separated. No spaces. Das ist eine Erfindung von mir! Nicht Joomla core. Und habe ich auch nicht in script.php, weil irgendwas nicht klappte.-->
-	<databaseServerType></databaseServerType>
 
 	<files>
 		<filename plugin="{{filename}}">{{filename}}.php</filename>
@@ -42,7 +40,7 @@
  <config>
   <fields name="params">
    <fieldset name="basic">
-    <field type="hidden" default="1" name="astroidghsvsplugin" />
+    <field type="hidden" default="1" name="{{filename}}plugin" />
    </fieldset>
 		<fieldset name="Einstellungen" label="Einstellungen">
 
