@@ -21,12 +21,9 @@ let versionSub = '';
 (async function exec()
 {
 	let cleanOuts = [
-		`./test1`,
 		`./package`,
 		`./dist`,
 		`./src/versions-installed`,
-		`${vendorPath}/bin`,
-		`${vendorPath}/scssphp/scssphp/bin`,
 	];
 
 	await helper.cleanOut(cleanOuts);
@@ -63,6 +60,13 @@ let versionSub = '';
 		answer => console.log(chalk.yellowBright(
 			`Copied "${manifestFileName}" to "./dist".`))
 	);
+
+	cleanOuts = [
+		`${__dirname}/package/vendor/bin`,
+		`${__dirname}/package/vendor/scssphp/scssphp/bin`,
+	];
+
+	await helper.cleanOut(cleanOuts);
 
 	// Create zip file and detect checksum then.
 	const zipFilePath = `./dist/${zipFilename}`;
