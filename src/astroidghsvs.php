@@ -63,8 +63,10 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 	public function onAfterAstroidRender()
 	{
 		if (
+			$this->params->get('forceSCSSCompilingGhsvs') !== -1
+
 			// Scheint nur bei Astroid-Templates ein 1 zu liefern
-			Astroid\Framework::isSite()
+			&& Astroid\Framework::isSite()
 			&& ($template = Astroid\Framework::getTemplate())
 
 			// Wohl gar nicht nötig. Paranoia.
