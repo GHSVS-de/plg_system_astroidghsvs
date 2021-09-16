@@ -1,7 +1,5 @@
 const fse = require('fs-extra');
 const path = require('path');
-const util = require("util");
-const rimRaf = util.promisify(require("rimraf"));
 const chalk = require('chalk');
 const replaceXml = require('./build/replaceXml.js');
 const helper = require('./build/helper.js');
