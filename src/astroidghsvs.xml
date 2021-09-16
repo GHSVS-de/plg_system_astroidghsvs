@@ -19,6 +19,14 @@
 
 	<infourl>https://updates.ghsvs.de/changelog.php?file={{name}}</infourl>
 
+	<downloadUrl>
+	https://github.com/GHSVS-de/{{name}}/raw/{{version}}/dist/{{zipFilename}}
+	</downloadUrl>
+
+	<versionCompare>
+	https://github.com/GHSVS-de/{{name}}/compare/{{versionCompare}}...{{version}}
+	</versionCompare>
+
 	<scriptfile>installerScript.php</scriptfile>
 	<minimumPhp>{{minimumPhp}}</minimumPhp>
 	<maximumPhp>{{maximumPhp}}</maximumPhp>
