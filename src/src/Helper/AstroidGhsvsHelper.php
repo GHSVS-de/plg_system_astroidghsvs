@@ -125,6 +125,9 @@ class AstroidGhsvsHelper
 			// The folder where the "$filesToCompile" are located.
 			'scssFolder' => self::$pluginParams->get('scssFolder', 'scss-ghsvs'),
 
+			'ignoreAstroidVariables' => (int) self::$pluginParams->get(
+				'ignoreAstroidVariables', 0),
+
 			// 0|1|-1(=disabled)
 			'forceSCSSCompilingGhsvs' => (int) self::$pluginParams->get(
 				'forceSCSSCompilingGhsvs', 0),
@@ -355,7 +358,8 @@ class AstroidGhsvsHelper
 						//  $purple.
 						// And it sets/overrides the --xyz CSS variables from
 						//  bootrsp/_root.scss.
-						if ($isAstroid === true)
+						if ($isAstroid === true
+							&& self::$compileSettings['ignoreAstroidVariables'] === 0)
 						{
 							$variables = $template->getThemeVariables();
 						}
