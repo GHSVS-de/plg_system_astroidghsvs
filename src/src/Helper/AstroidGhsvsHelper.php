@@ -106,6 +106,9 @@ class AstroidGhsvsHelper
 	 */
 	protected static $replaceThis = '<!--<ghsvs:include type="stylesheets">-->';
 
+	protected static $debug = 0;
+	protected static $logFile;
+
 	private static function init()
 	{
 		self::$pluginParams = PlgSystemAstroidGhsvs::getPluginParams();
@@ -136,6 +139,22 @@ class AstroidGhsvsHelper
 			'forceSCSSUtf8Ghsvs' => (int) self::$pluginParams->get(
 				'forceSCSSUtf8Ghsvs', 0),
 		];
+
+		self::$debug = (integer) self::$pluginParams->get('debug', 0);
+
+		if (self::$debug === 1)
+		{
+			$cacheFolderAbs = JPATH_ADMINISTRATOR . '/cache/plg_system_astroidghsvs';
+
+			if (!is_dir($cacheFolderAbs))
+			{
+				Folder::create($cacheFolderAbs);
+			}
+
+			self::$logFile = $cacheFolderAbs . '/debugLog.txt';
+			self::debug('Debugging starts in plg_system_astroidghsvs '
+				. date('Y-m-d H:i:s'));
+		}
 	}
 
 	/**
@@ -160,17 +179,15 @@ class AstroidGhsvsHelper
 			return false;
 		}
 
+		// E.g. set in template index.php or whereever.
 		if (isset(self::$compileSettingsCustom['forceSCSSCompilingGhsvs'])
 			&& (int) self::$compileSettingsCustom['forceSCSSCompilingGhsvs'] === -1)
 		{
+			self::debug('forceSCSSCompilingGhsvs deactivated in template index.php or whereever');
 			return false;
 		}
 
 		self::init();
-
-### DEBUG
-// $debugFile = JPATH_SITE . '/runScssGhsvs.txt';
-### /DEBUG
 
 		self::$compileSettings = \array_merge(
 			self::$compileSettingsDefault,
@@ -182,6 +199,7 @@ class AstroidGhsvsHelper
 
 		if ($force === -1)
 		{
+			self::debug('forceSCSSCompilingGhsvs deactivated');
 			return false;
 		}
 
@@ -331,6 +349,8 @@ class AstroidGhsvsHelper
 
 		if ($force === 1)
 		{
+			self::debug('$force is 1. Start SCSS compiling');
+
 			try
 			{
 				ini_set('memory_limit', '1024M');
@@ -424,6 +444,8 @@ class AstroidGhsvsHelper
 				// IN ASTROID TEMPLATES only: In order for the message to be displayed, a new page request
 				//  must unfortunately be made directly.
 				$app->enqueueMessage($msg);
+				self::debug($msg);
+
 				// noScssCompilation=1 is a protection against endless loop.
 				// See above.
 				if ($isAstroid)
@@ -517,6 +539,15 @@ class AstroidGhsvsHelper
 				//  source files
 				'sourceRoot' => Uri::root(),
 			]);
+		}
+	}
+
+	private static function debug(string $msg)
+	{
+		if (self::$debug === 1)
+		{
+			file_put_contents(self::$logFile, PHP_EOL . $msg . '.' . PHP_EOL,
+				FILE_APPEND);
 		}
 	}
 }

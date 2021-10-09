@@ -61,6 +61,16 @@
 					<option value="1">JYES</option>
 			</field>
 
+			<field name="debugSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_DEBUG"
+				description="PLG_SYSTEM_ASTROIDGHSVS_DEBUG_DESC" />
+
+			<field name="debug" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_DEBUG">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+
 			<field name="placeHolderModeSpacer" type="note"
 				label="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE"
 				description="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE_DESC" />
