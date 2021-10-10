@@ -121,7 +121,8 @@
 				description="">
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
-				<option value="-1">Disable completely</option>
+				<option value="-1">Disable completely [-1]</option>
+				<option value="-2">Disable but include existing CSS [-2]</option>
 			</field>
 
 			<field name="sourceMapsSpacer" type="note"

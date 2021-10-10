@@ -13,6 +13,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 class AstroidGhsvsHelper
 {
+	/* prerequites fail. Do absolutely nothing! */
+	public const DONOTHING = 0;
+	public const RUNSCSSGHSVS = 1;
+	/* Include CSS but not compile before */
+	public const INCLUDEONLY = 2;
+
+	public static  $mode = '';
+
 	/*
 	 * SOURCE *.scss files. Only filenames without extensions
 	 * Fill AstroidTemplateHelper::$filesToCompile in index.php of template!
@@ -22,13 +30,13 @@ class AstroidGhsvsHelper
 	 * 'template-zaltas.scss' will be compiled to 'template-zaltas.css' but
 	 * NOT(!) inserted in <HEAD> because of '|noInsert' part.
 	 *
-	 * Watch out! Inserted files normally get an template style id postfix.
+	 * Watch out! Inserted files sometimes get an template style id postfix.
 	 * In above example: You'll get something like 'template-20.css'.
 	 * You can disable that with parameter 'includeStyleId'.
 	 *
 	 * array
 	 */
-	public static $filesToCompile = [];
+	public static $filesToCompile = null;
 
 	/**
 	 * Optional possibility to override helper settings. E.g. in template index.php.
@@ -36,32 +44,11 @@ class AstroidGhsvsHelper
 	 */
 	public static $compileSettingsCustom = [];
 
-	/**
-	 * Default helper settings. Can be overriden by $compileSettings.
-	 * array
-	 */
-	protected static $compileSettingsDefault = [
-		// The CSS file that will include $renderedCSS and variables from
-		// Astroid template's style settings.
-		'mainCssName' => 'template',
-
-		// The SCSS SOURCE folder in template dir.
-		// The folder where the "$filesToCompile" are located.
-		'scssFolder' => 'scss-ghsvs',
-
-		// The CSS TARGET folder in template dir..
-		'cssFolder' => 'css',
-
-		// Create SourceMaps? true|false.
-		'sourceMaps' => false,
-
-		'placeHolderMode' => true,
-		'forceSCSSCompilingGhsvs' => 0,
-		'includeStyleId' => true,
-		'forceSCSSUtf8Ghsvs' => 0,
-	];
-
-	protected static $compileSettings = [];
+	/** The calculated "absolute" settings. Merge of plugin settings and
+	* $compileSettingsCustom.
+	* array|null (as switch if already defined)
+	*/
+	protected static $compileSettings = null;
 
 	/**
 	* Settings of plugin plg_system_astroidghsvs or empty.
@@ -69,6 +56,11 @@ class AstroidGhsvsHelper
 	* Registry
 	*/
 	public static $pluginParams;
+
+	/** Key of $collect[] is REAL CSS file name. Can contain template->id.
+	 * Collects all relevant files (SCSS and lastly CSS).
+	*/
+	protected static $collectedFiles = null;
 
 	/**
 	 * A collector array. You don't have to do nothing here.
@@ -94,13 +86,19 @@ class AstroidGhsvsHelper
 	 */
 	protected static $compiler;
 
+	protected static $template = null;
+
 	/**
 	 * Absolute path to target folder where *.css will be saved.
 	 * string
 	 */
 	protected static $cssFolderAbs;
 
-	protected static $mediaVersion;
+	/**
+	 * Absolute path to source folder where *.scss are located.
+	 * string|null (as switch if variable already populated).
+	 */
+	protected static $scssFolderAbs = null;
 
 	/** Placeholder in index.php.
 	 */
@@ -109,52 +107,126 @@ class AstroidGhsvsHelper
 	protected static $debug = 0;
 	protected static $logFile;
 
-	private static function init()
+	/** We need some checks BEFORE Atroid renders the template.
+	* E.g. to detect if HTMLHelper must be used or not.
+	*/
+	public static function preCheck()
 	{
-		self::$pluginParams = PlgSystemAstroidGhsvs::getPluginParams();
-		self::$compileSettingsDefault = [
+		$app = Factory::getApplication();
 
-			// The CSS file that will include $renderedCSS and variables from
-			// Astroid template's style settings.
-			'mainCssName' => 'template',
-
-			// The CSS TARGET folder in template dir..
-			'cssFolder' => 'css',
-
-			'placeHolderMode' => (bool) self::$pluginParams->get('placeHolderMode', 1),
-			'includeStyleId' => (bool) self::$pluginParams->get('includeStyleId', 1),
-
-			// The SCSS SOURCE folder in template dir.
-			// The folder where the "$filesToCompile" are located.
-			'scssFolder' => self::$pluginParams->get('scssFolder', 'scss-ghsvs'),
-
-			'ignoreAstroidVariables' => (int) self::$pluginParams->get(
-				'ignoreAstroidVariables', 0),
-
-			// 0|1|-1(=disabled)
-			'forceSCSSCompilingGhsvs' => (int) self::$pluginParams->get(
-				'forceSCSSCompilingGhsvs', 0),
-
-			'sourceMaps' => (bool) self::$pluginParams->get('sourceMaps', 0),
-			'forceSCSSUtf8Ghsvs' => (int) self::$pluginParams->get(
-				'forceSCSSUtf8Ghsvs', 0),
-		];
-
-		self::$debug = (integer) self::$pluginParams->get('debug', 0);
-
-		if (self::$debug === 1)
+		/* URL-Parameter noScssCompilation um Fehlerseite scssError.php ohne
+		Endlos-Loop ausgeben zu können.*/
+		if ($app->input->get('noScssCompilation') == 1)
 		{
-			$cacheFolderAbs = JPATH_ADMINISTRATOR . '/cache/plg_system_astroidghsvs';
+			self::debug('Do nothing. URL-Parameter "noScssCompilation" found');
+			return (self::$mode = self::DONOTHING);
+		}
 
-			if (!is_dir($cacheFolderAbs))
+		// Prerequites fail.
+		if (empty(self::$filesToCompile))
+		{
+			self::debug('Error. Do nothing. self::$filesToCompile empty');
+			return (self::$mode = self::DONOTHING);;
+		}
+
+		self::initSettings();
+
+		self::debug('preCheck() runs');
+
+		// User decision.
+		if (self::$compileSettings['forceSCSSCompilingGhsvs'] === -1)
+		{
+			self::debug('Do nothing. "forceSCSSCompilingGhsvs" disabled completely');
+			return (self::$mode = self::DONOTHING);
+		}
+
+		/* User decision. If placeholderMode is OFF we will use HTMLHelper directly
+		 in self::buildLink() */
+		if (self::$compileSettings['forceSCSSCompilingGhsvs'] === -2)
+		{
+			self::debug('Do not compile but include existing CSS via HTMLHelper or placeholder');
+
+			if (self::collectFiles() === false)
 			{
-				Folder::create($cacheFolderAbs);
+				self::debug('Error. No CSS files found');
+				return (self::$mode = self::DONOTHING);
 			}
 
-			self::$logFile = $cacheFolderAbs . '/debugLog.txt';
-			self::debug('Debugging starts in plg_system_astroidghsvs '
-				. date('Y-m-d H:i:s'));
+			foreach (self::$collectedFiles as $cssFileName => $fileName)
+			{
+				self::buildLink($fileName, $cssFileName);
+			}
+
+			return (self::$mode = self::INCLUDEONLY);
 		}
+
+		if (self::$compileSettings['forceSCSSCompilingGhsvs'] >= 0)
+		{
+			return (self::$mode = self::RUNSCSSGHSVS);
+		}
+
+		self::debug('Do nothing. All checks passed but have absolutely no idea what to do');
+		return (self::$mode = self::DONOTHING);
+	}
+
+	/** Populates $pluginParams, $compileSettings, $debug, $logFile.
+
+	*/
+	private static function initSettings()
+	{
+		if (self::$compileSettings === null)
+		{
+			self::$pluginParams = PlgSystemAstroidGhsvs::getPluginParams();
+
+			$compileSettingsDefault = [
+
+				// The CSS file that will include $renderedCSS and variables from
+				// Astroid template's style settings.
+				'mainCssName' => 'template',
+
+				// The CSS TARGET folder in template dir..
+				'cssFolder' => 'css',
+
+				'placeHolderMode' => (bool) self::$pluginParams->get('placeHolderMode', 1),
+				'includeStyleId' => (bool) self::$pluginParams->get('includeStyleId', 1),
+
+				// The SCSS SOURCE folder in template dir.
+				// The folder where the "$filesToCompile" are located.
+				'scssFolder' => self::$pluginParams->get('scssFolder', 'scss-ghsvs'),
+
+				'ignoreAstroidVariables' => (int) self::$pluginParams->get(
+					'ignoreAstroidVariables', 0),
+
+				// 0|1|-1(=disabled)
+				'forceSCSSCompilingGhsvs' => (int) self::$pluginParams->get(
+					'forceSCSSCompilingGhsvs', 0),
+
+				'sourceMaps' => (bool) self::$pluginParams->get('sourceMaps', 0),
+				'forceSCSSUtf8Ghsvs' => (int) self::$pluginParams->get(
+					'forceSCSSUtf8Ghsvs', 0),
+			];
+
+			self::$compileSettings = \array_merge($compileSettingsDefault,
+				self::$compileSettingsCustom);
+
+			self::$debug = (integer) self::$pluginParams->get('debug', 0);
+
+			if (self::$debug === 1)
+			{
+				$cacheFolderAbs = JPATH_ADMINISTRATOR . '/cache/plg_system_astroidghsvs';
+
+				if (!is_dir($cacheFolderAbs))
+				{
+					Folder::create($cacheFolderAbs);
+				}
+
+				self::$logFile = $cacheFolderAbs . '/debugLog.txt';
+				self::debug('Debugging starts in plg_system_astroidghsvs '
+					. date('Y-m-d H:i:s'));
+			}
+		}
+
+		self::debug('initSettings() done');
 	}
 
 	/**
@@ -168,309 +240,327 @@ class AstroidGhsvsHelper
 	*  Astroid-CSS, das norm. im 2. "compiled-..css" des Astroid-Frameworks.
 	* Das Plugin ruft diese Methode in onAfterAstroidRender() auf!
 	*/
-	public static function runScssGhsvs($renderedCSS, $templateThis = null)
+	public static function runScssGhsvs($renderedCSS)
 	{
-		$app = Factory::getApplication();
-
-		/* URL-Parameter um Fehlerseite scssError.php ohne Endlos-Loop ausgeben zu
-		können.*/
-		if ($app->input->get('noScssCompilation') == 1 || !self::$filesToCompile)
-		{
-			return false;
-		}
-
-		// E.g. set in template index.php or whereever.
-		if (isset(self::$compileSettingsCustom['forceSCSSCompilingGhsvs'])
-			&& (int) self::$compileSettingsCustom['forceSCSSCompilingGhsvs'] === -1)
-		{
-			self::debug('forceSCSSCompilingGhsvs deactivated in template index.php or whereever');
-			return false;
-		}
-
-		self::init();
-
-		self::$compileSettings = \array_merge(
-			self::$compileSettingsDefault,
-			self::$compileSettingsCustom,
-		);
-
-		// 0|1|-1(=disabled)
-		$force = self::$compileSettings['forceSCSSCompilingGhsvs'];
-
-		if ($force === -1)
-		{
-			self::debug('forceSCSSCompilingGhsvs deactivated');
-			return false;
-		}
-
-		if (defined('_ASTROID'))
-		{
-			$template = Astroid\Framework::getTemplate();
-		}
-		elseif ($templateThis !== null)
-		{
-			$template = $templateThis;
-		}
-		else
-		{
-			$template = $app->getTemplate(true);
-		}
-
-		// At least needed for mediaVersion:
-		if (empty($template->id))
-		{
-			$template->id = $app->getTemplate(true)->id;
-		}
-
-		// Key of $collect[] is REAL CSS file name. Can contain template->id.
-		$collect = [];
-		$cssFilePostfix = '';
-		$isAstroid = !empty($template->isAstroid);
-		$cssFolder = self::$compileSettings['cssFolder'];
-		$templateDir    = 'templates/' . $template->template;
-		$templateDirAbs = JPATH_SITE . '/' . $templateDir;
-		$scssFolderAbs  = $templateDirAbs . '/'
-			. self::$compileSettings['scssFolder'];
-		self::$cssFolderAbs = $templateDirAbs . '/' . $cssFolder;
-
-		if (!is_dir(self::$cssFolderAbs))
-		{
-			Folder::create(self::$cssFolderAbs);
-		}
-
-		// Normally only in Astroid templates.
-		if (self::$compileSettings['placeHolderMode'] === true)
-		{
-			self::$cssLink = Uri::root() . $templateDir . '/' . $cssFolder . '/';
-		}
-
-		/* Check if all provided scss fileNames exist and ignore not existing ones.
-		Add to collect[] if esxists. */
-		foreach (self::$filesToCompile as $key => $fileName)
-		{
-			$fileName = explode('|', $fileName);
-
-			if (is_file($scssFolderAbs . '/' . $fileName[0] . '.scss'))
-			{
-				// A '|' found after filename. Means don't insert in <head>, just compile.
-				if (isset($fileName[1]))
-				{
-					self::$doNotInsert[$fileName[0]] = 1;
-					$cssFilePostfix = '';
-				}
-				elseif (self::$compileSettings['includeStyleId'] === true)
-				{
-					$cssFilePostfix = '-' . $template->id;
-				}
-
-				// Key: CSS file name. Value: SCSS file name.
-				$collect[$fileName[0] . $cssFilePostfix] = $fileName[0];
-			}
-		}
-
-		// No existing scss fileNames at all. Leave.
-		if (!$collect)
-		{
-			return false;
-		}
-
-		/* needed for mediaVersion.
-		 */
-		if  (!isset($template->hash))
-		{
-			// Funktioniert nicht wegen meinen BodyClasses, die sich ja ständig ändern
-			// $template->hash = md5(serialize($template));
-
-			$template->hash = md5((string) $template->home . '_'
-				. $template->template);
-		}
-
-		// Last compile time is...? Has anything changed? New compilation or not?
-
-		/* Create hash file name. Is indicator if settings have been changed.
-		Be aware if JDEBUG that $template changes with each call! Because it includes
-		the Joomla the changing mediaVersion as property.
-		Therefore	self::$mediaVersion, too. In debug mode => always compilation.
+		/* Beachte, dass diese Methode auch von außerhalb rufbar ist, bevor das Plugin
+		vorbereitet hat. Deshalb:
 		*/
-		self::$mediaVersion = $template->id . '_' . md5(
-				serialize(self::$compileSettings)
-				. serialize($collect)
-				. serialize(self::$pluginParams->toArray())
-				. '_' . $template->hash
-			);
-
-		$ghsvsHashFile = 'ghsvsHash-' . self::$mediaVersion . '.ghsvsHash';
-
-		if (!is_file(self::$cssFolderAbs . '/' . $ghsvsHashFile))
+		if (self::$compileSettings === null)
 		{
-			$force = 1;
+			PlgSystemAstroidGhsvs::getModeAndThings();
+		}
+
+		self::debug('runScssGhsvs() runs');
+
+		if (self::$mode === self::RUNSCSSGHSVS)
+		{
+			self::debug('Mode is self::RUNSCSSGHSVS');
+			$force = 0;
 			$lastCompileTime = 0;
+			self::collectFiles();
 
-			// Delete older hash files of this template style id.
-			$styles = Folder::files(
-				self::$cssFolderAbs, '^ghsvsHash-' . $template->id  . '_', true, true
-			);
-
-			foreach ($styles as $style)
+			if (self::$compileSettings['forceSCSSCompilingGhsvs'] === 1)
 			{
-				unlink($style);
+				$force = 1;
 			}
-		}
-		else
-		{
-			$lastCompileTime = filemtime(self::$cssFolderAbs . '/' . $ghsvsHashFile);
-		}
 
-		// Check if relevant CSS files are missing. If yes force compiling.
-		if ($force === 0)
-		{
-			foreach ($collect as $fileName => $value)
+			$isAstroid = !empty(self::$template->isAstroid);
+
+			#### Last compile time is...? Has something changed? New compilation or not?
+
+			$ghsvsHashFile = 'ghsvsHash-' . self::$template->myMediaVersion
+				. '.ghsvsHash';
+
+			if ($force === 0)
 			{
-				if (!is_file(self::$cssFolderAbs . '/' . $fileName . '.css'))
+				if (!is_file(self::$cssFolderAbs . '/' . $ghsvsHashFile))
 				{
 					$force = 1;
-					break;
-				}
-			}
-		}
+					$lastCompileTime = 0;
 
-		// Check if SCSS files were changed since last compile.
-		if ($force === 0)
-		{
-			foreach(Folder::files($scssFolderAbs, '\.scss$', true, true) as $scssFile)
-			{
-				if (filemtime($scssFile) > $lastCompileTime)
-				{
-					$force = 1;
-					break;
-				}
-			}
-		}
-
-		if ($force === 1)
-		{
-			self::debug('$force is 1. Start SCSS compiling');
-
-			try
-			{
-				ini_set('memory_limit', '1024M');
-				self::$compiler = new ScssPhp\ScssPhp\Compiler;
-				self::$compiler->setImportPaths($scssFolderAbs);
-
-				foreach ($collect as $cssFileName => $fileName)
-				{
-					$content = '';
-
-					if (self::$compileSettings['forceSCSSUtf8Ghsvs'] === 1)
-					{
-						$content = '@charset "UTF-8";';
-					}
-
-					$content .= '@import "' . $fileName . '.scss";';
-
-					if ($fileName === self::$compileSettings['mainCssName'])
-					{
-						$content .= '/* Android renderedCSS */' . $renderedCSS;
-
-						// These are the color settings from Astroid template
-						//  style.
-						// In *.scss you can use them then as variables like
-						//  $purple.
-						// And it sets/overrides the --xyz CSS variables from
-						//  bootrsp/_root.scss.
-						if ($isAstroid === true
-							&& self::$compileSettings['ignoreAstroidVariables'] === 0)
-						{
-							$variables = $template->getThemeVariables();
-						}
-
-						if (!empty($variables))
-						{
-							self::$compiler->setVariables($variables);
-						}
-					}
-
-					##### UNMINIFIED START #####
-					$outputFileName = $cssFileName . '.css';
-					self::$compiler->setOutputStyle(
-						\ScssPhp\ScssPhp\OutputStyle::EXPANDED
+					// Delete older hash files of this template style id.
+					$styles = Folder::files(
+						self::$cssFolderAbs, '^ghsvsHash-' . self::$template->id  . '_', true, true
 					);
 
-					if (self::$compileSettings['sourceMaps'] === true)
+					foreach ($styles as $style)
 					{
-						self::setOrResetSourceMap($outputFileName);
+						unlink($style);
 					}
-					else
+				}
+				else
+				{
+					$lastCompileTime = filemtime(self::$cssFolderAbs . '/' . $ghsvsHashFile);
+				}
+			}
+
+			// Check if relevant CSS files are missing. If yes force compiling.
+			if ($force === 0)
+			{
+				foreach (self::$collectedFiles as $fileName => $value)
+				{
+					if (!is_file(self::$cssFolderAbs . '/' . $fileName . '.css'))
 					{
-						self::setOrResetSourceMap();
+						$force = 1;
+						break;
 					}
+				}
+			}
 
-					$css = self::$compiler->compile($content);
-					file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
-					##### UNMINIFIED END #####
-
-					##### MINIFIED START #####
-					$outputFileName = $cssFileName . '.min.css';
-					self::$compiler->setOutputStyle(
-						\ScssPhp\ScssPhp\OutputStyle::COMPRESSED
-					);
-
-					if (self::$compileSettings['sourceMaps'] === true)
+			// Check if SCSS files were changed since last compile.
+			if ($force === 0)
+			{
+				foreach(Folder::files(self::$scssFolderAbs, '\.scss$', true, true)
+					as $scssFile)
+				{
+					if (filemtime($scssFile) > $lastCompileTime)
 					{
-						self::setOrResetSourceMap($outputFileName);
+						$force = 1;
+						break;
 					}
-					else
+				}
+			}
+
+			if ($force === 1)
+			{
+				self::debug('$force is 1. Start SCSS compiling');
+
+				try
+				{
+					ini_set('memory_limit', '1024M');
+					self::$compiler = new ScssPhp\ScssPhp\Compiler;
+					self::$compiler->setImportPaths(self::$scssFolderAbs);
+
+					foreach (self::$collectedFiles as $cssFileName => $fileName)
 					{
-						self::setOrResetSourceMap();
+						$content = '';
+
+						if (self::$compileSettings['forceSCSSUtf8Ghsvs'] === 1)
+						{
+							$content = '@charset "UTF-8";';
+						}
+
+						$content .= '@import "' . $fileName . '.scss";';
+
+						if ($fileName === self::$compileSettings['mainCssName'])
+						{
+							$content .= '/* Astrroid renderedCSS */' . $renderedCSS;
+
+							// These are the color settings from Astroid template
+							//  style.
+							// In *.scss you can use them then as variables like
+							//  $purple.
+							// And it sets/overrides the --xyz CSS variables from
+							//  bootrsp/_root.scss.
+							if ($isAstroid === true
+								&& self::$compileSettings['ignoreAstroidVariables'] === 0)
+							{
+								$variables = self::$template->getThemeVariables();
+							}
+
+							if (!empty($variables))
+							{
+								self::$compiler->setVariables($variables);
+							}
+						}
+
+						##### UNMINIFIED START #####
+						$outputFileName = $cssFileName . '.css';
+						self::$compiler->setOutputStyle(
+							\ScssPhp\ScssPhp\OutputStyle::EXPANDED
+						);
+
+						if (self::$compileSettings['sourceMaps'] === true)
+						{
+							self::setOrResetSourceMap($outputFileName);
+						}
+						else
+						{
+							self::setOrResetSourceMap();
+						}
+
+						$css = self::$compiler->compile($content);
+						file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
+						##### UNMINIFIED END #####
+
+						##### MINIFIED START #####
+						$outputFileName = $cssFileName . '.min.css';
+						self::$compiler->setOutputStyle(
+							\ScssPhp\ScssPhp\OutputStyle::COMPRESSED
+						);
+
+						if (self::$compileSettings['sourceMaps'] === true)
+						{
+							self::setOrResetSourceMap($outputFileName);
+						}
+						else
+						{
+							self::setOrResetSourceMap();
+						}
+
+						$css = self::$compiler->compile($content);
+						file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
+						##### MINIFIED END #####
+
+						self::buildLink($fileName, $cssFileName);
 					}
 
-					$css = self::$compiler->compile($content);
-					file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
-					##### MINIFIED END #####
+					file_put_contents(self::$cssFolderAbs . '/' . $ghsvsHashFile, '');
+				}
+				// This is a bit awkward. Needs a scssError.php in template folder
+				//  with <jdoc:include type="message" />.
+				// Problem is that an $app->enqueueMessage would otherwise run into
+				//  the void because the page content is already rendered.
+				catch (\Exception $e)
+				{
+					$msg = $e->getMessage() . PHP_EOL . '<br>' . PHP_EOL . '<br><br>';
+					$msg .= '<b>Bitte um Entschuldigung!' . PHP_EOL . '<br><br>' . 'Das Kompilieren der SCSS-Dateien wurde fatal abgebrochen. Das kann an einer Überlastung des Systems liegen oder auch ein Fehler in einer SCSS-Datei sein.' . PHP_EOL . '<br><br>' . '<a href="' . JUri::root() . '">Noch mal probieren? Zur Startseite!</a>.' . PHP_EOL . '<br><br>' . 'Info an Administrator schicken? Danke dafür! <a href="mailto:schraefl-bedachungen@ghsvs.de">schraefl-bedachungen[AT]ghsvs.de</a>.' . PHP_EOL . '<br><br>' . 'Vielen Dank für Ihr Verständnis.</b>';
+					// IN ASTROID TEMPLATES only: In order for the message to be displayed, a new page request
+					//  must unfortunately be made directly.
+					$app->enqueueMessage($msg);
+					self::debug($msg);
 
+					// noScssCompilation=1 is a protection against endless loop.
+					// See above.
+					if ($isAstroid)
+					{
+						$app->redirect(Uri::root() . '?noScssCompilation=1&tmpl=scssError',
+							500);
+					}
+
+					return false;
+				}
+			}
+			// $force === 0
+			else
+			{
+				foreach (self::$collectedFiles as $cssFileName => $fileName)
+				{
 					self::buildLink($fileName, $cssFileName);
 				}
-
-				file_put_contents(self::$cssFolderAbs . '/' . $ghsvsHashFile, '');
-			}
-			// This is a bit awkward. Needs a scssError.php in template folder
-			//  with <jdoc:include type="message" />.
-			// Problem is that an $app->enqueueMessage would otherwise run into
-			//  the void because the page content is already rendered.
-			catch (\Exception $e)
-			{
-				$msg = $e->getMessage() . PHP_EOL . '<br>' . PHP_EOL . '<br><br>';
-				$msg .= '<b>Bitte um Entschuldigung!' . PHP_EOL . '<br><br>' . 'Das Kompilieren der SCSS-Dateien wurde fatal abgebrochen. Das kann an einer Überlastung des Systems liegen oder auch ein Fehler in einer SCSS-Datei sein.' . PHP_EOL . '<br><br>' . '<a href="' . JUri::root() . '">Noch mal probieren? Zur Startseite!</a>.' . PHP_EOL . '<br><br>' . 'Info an Administrator schicken? Danke dafür! <a href="mailto:schraefl-bedachungen@ghsvs.de">schraefl-bedachungen[AT]ghsvs.de</a>.' . PHP_EOL . '<br><br>' . 'Vielen Dank für Ihr Verständnis.</b>';
-				// IN ASTROID TEMPLATES only: In order for the message to be displayed, a new page request
-				//  must unfortunately be made directly.
-				$app->enqueueMessage($msg);
-				self::debug($msg);
-
-				// noScssCompilation=1 is a protection against endless loop.
-				// See above.
-				if ($isAstroid)
-				{
-					$app->redirect(
-						Uri::root() . '?noScssCompilation=1&tmpl=scssError', 500
-				);
-				}
-				return false;
-			}
-	 	}
-		// $force === 0
-		else
-		{
-			foreach ($collect as $cssFileName => $fileName)
-			{
-				self::buildLink($fileName, $cssFileName);
 			}
 		}
 
-		if (self::$replaceWith !== '')
+		self::replacePlaceholder();
+
+		return true;
+	}
+
+	private static function getTemplateData()
+	{
+		self::debug('getTemplateData() started');
+
+		if (self::$template === null)
 		{
-			$body = $app->getBody();
-			$body = str_replace(self::$replaceThis, self::$replaceWith, $body);
-			$app->setBody($body);
+			if (defined('_ASTROID'))
+			{
+				self::$template = Astroid\Framework::getTemplate();
+			}
+			else
+			{
+				self::$template = Factory::getApplication()->getTemplate(true);
+			}
+
+			self::$template->myPath = 'templates/' . self::$template->template;
+
+			// At least needed for mediaVersion:
+			if (empty(self::$template->id))
+			{
+				self::$template->id = Factory::getApplication()->getTemplate(true)->id;
+			}
+
+			/* needed for mediaVersion.
+			*/
+			if  (!isset(self::$template->hash))
+			{
+				// Funktioniert nicht wegen meinen BodyClasses, die sich ja ständig ändern
+				// self::$template->hash = md5(serialize(self::$template));
+
+				self::$template->hash = md5((string) self::$template->home . '_'
+					. self::$template->template);
+			}
+
+			/* Create hash file name. Is indicator if settings have been changed.
+			Be aware if JDEBUG that self::$template changes with each call! Because it includes
+			the Joomla the changing mediaVersion as property.
+			Therefore	self::$template->myMediaVersion, too. In debug mode => always compilation.
+			*/
+			self::$template->myMediaVersion = self::$template->id . '_' . md5(
+				serialize(self::$compileSettings) . serialize(self::$collectedFiles)
+				. serialize(self::$pluginParams->toArray())
+				. '_' . self::$template->hash);
+		}
+	}
+
+	/** Define absolute paths of scss files (source) and css files (target).
+	*/
+	private static function getWorkPaths()
+	{
+		self::debug('getWorkPaths() started');
+
+		if (self::$scssFolderAbs === null)
+		{
+			self::getTemplateData();
+			$templatePathAbs = JPATH_SITE . '/' . self::$template->myPath;
+			self::$scssFolderAbs = $templatePathAbs . '/'
+				. self::$compileSettings['scssFolder'];
+			self::$cssFolderAbs = $templatePathAbs . '/'
+				. self::$compileSettings['cssFolder'];
+
+			if (!is_dir(self::$cssFolderAbs))
+			{
+				Folder::create(self::$cssFolderAbs);
+			}
+
+			// Normally only in Astroid templates.
+			if (self::$compileSettings['placeHolderMode'] === true)
+			{
+				self::$cssLink = Uri::root() . self::$template->myPath . '/'
+					. self::$compileSettings['cssFolder'] . '/';
+			}
+		}
+	}
+
+	/** Check if all provided scss fileNames exist and ignore not existing ones.
+	 * Add to self::$collectedFiles[] if esxists.
+	 * Add to self::$doNotInsert[] if required.
+	*/
+	private static function collectFiles()
+	{
+		self::debug('collectFiles() started');
+
+		if (self::$collectedFiles === null)
+		{
+			self::$collectedFiles = [];
+			self::getWorkPaths();
+
+			foreach (self::$filesToCompile as $key => $fileName)
+			{
+				$cssFilePostfix = '';
+				$fileName = explode('|', $fileName);
+
+				if (is_file(self::$scssFolderAbs . '/' . $fileName[0] . '.scss'))
+				{
+					// A '|' found after filename. Means don't insert in <head>, just compile.
+					if (isset($fileName[1]))
+					{
+						self::$doNotInsert[$fileName[0]] = 1;
+					}
+					elseif (self::$compileSettings['includeStyleId'] === true)
+					{
+						self::getTemplateData();
+						$cssFilePostfix = '-' . self::$template->id;
+					}
+
+					// Key: CSS file name. Value: SCSS file name.
+					self::$collectedFiles[$fileName[0] . $cssFilePostfix] = $fileName[0];
+				}
+			}
+		}
+
+		if (empty(self::$collectedFiles))
+		{
+			return false;
 		}
 
 		return true;
@@ -478,9 +568,11 @@ class AstroidGhsvsHelper
 
 	private static function buildLink($fileName, $cssFileName)
 	{
+		self::debug('buildLink(' . $cssFileName . ') started');
+
 		if (!isset(self::$doNotInsert[$fileName]))
 		{
-			$href = self::$cssLink  . $cssFileName;
+			$href = self::$cssLink . $cssFileName;
 
 			if (JDEBUG)
 			{
@@ -493,16 +585,34 @@ class AstroidGhsvsHelper
 
 			if (self::$compileSettings['placeHolderMode'] === true)
 			{
-				$href .= '?' . self::$mediaVersion;
-			self::$replaceWith .= '<link href="' . $href
+				$href .= '?' . self::$template->myMediaVersion;
+				self::$replaceWith .= '<link href="' . $href
 				. '" rel="stylesheet" />' . PHP_EOL;
 			}
 			else
 			{
 				HTMLHelper::_('stylesheet', $href,
-					array('version' => self::$mediaVersion, 'relative' => true)
+					['version' => self::$template->myMediaVersion, 'relative' => true]
 				);
 			}
+		}
+	}
+
+	public static function replacePlaceholder()
+	{
+		self::debug('replacePlaceholder() started');
+
+		if (self::$replaceWith !== '')
+		{
+			self::debug('... and used');
+			$app = Factory::getApplication();
+			$body = $app->getBody();
+			$body = str_replace(self::$replaceThis, self::$replaceWith, $body);
+			$app->setBody($body);
+		}
+		else
+		{
+			self::debug('... and NOT used');
 		}
 	}
 

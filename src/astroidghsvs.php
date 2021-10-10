@@ -11,9 +11,14 @@ if (is_dir(JPATH_LIBRARIES . '/astroid/framework/library/astroid'))
 	);
 }
 
+JLoader::register('AstroidGhsvsHelper',
+	__DIR__ . '/src/Helper/AstroidGhsvsHelper.php');
+
 class PlgSystemAstroidGhsvs extends CMSPlugin
 {
 	protected $app;
+
+	protected static $mode;
 
 	// media/ path
 	##protected static $basepath = 'plg_system_astroidghsvs';
@@ -49,10 +54,19 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 		static::$plgParams = $this->params;
 	}
 
+	/* Absolut keine Idee, warum der AstroidGhsvsHelper gelegentlich sein
+	self::-Variablen verliert. */
+	public function onBeforeRender()
+	{
+		if (empty(self::$mode))
+		{
+			// Does several things.
+			self::getModeAndThings();
+		}
+	}
+
 	public function onBeforeAstroidRender()
 	{
-		return;
-
 		//Framework::getTemplate()->isAstroid;
 	}
 
@@ -62,22 +76,28 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 	*/
 	public function onAfterAstroidRender()
 	{
-		if (
-			$this->params->get('forceSCSSCompilingGhsvs') !== -1
+		/* 2 scenarios: HTMLHelper has already done it's job.
+		Or self::$replaceWith is populated and placeholder will be replaced */
+		if (self::$mode === AstroidGhsvsHelper::INCLUDEONLY)
+		{
+			AstroidGhsvsHelper::replacePlaceholder();
+			return;
+		}
 
+		if (self::$mode !== AstroidGhsvsHelper::RUNSCSSGHSVS)
+		{
+			return;
+		}
+
+		if (
 			// Scheint nur bei Astroid-Templates ein 1 zu liefern
-			&& Astroid\Framework::isSite()
+			Astroid\Framework::isSite()
 			&& ($template = Astroid\Framework::getTemplate())
 
 			// Wohl gar nicht nötig. Paranoia.
 			&& $template->isAstroid
 		){
-			JLoader::register('AstroidGhsvsHelper',
-				__DIR__ . '/src/Helper/AstroidGhsvsHelper.php'
-			);
 
-			if (method_exists('AstroidGhsvsHelper', 'runScssGhsvs'))
-			{
 				$document = Astroid\Framework::getDocument();
 
 				// $renderedCSS Wird für eigenes Compiling benötigt und deshalb
@@ -85,11 +105,10 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 				//  gerendert ist..
 				$renderedCSS = $document->renderCss();
 
-				// Und übergeben an eigenes Compiling via AstroidTemplateHelper.
-				$css = AstroidGhsvsHelper::runScssGhsvs($renderedCSS);
+				// Und übergeben an eigenes Compiling via AstroidGhsvsHelper.
+				AstroidGhsvsHelper::runScssGhsvs($renderedCSS);
 			}
 		}
-	}
 
 	/**
 	 * Getter for parameters of this plugin via PlgSystemAstroidGhsvs::getPluginParams()
@@ -98,5 +117,10 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 	public static function getPluginParams()
 	{
 		return static::$plgParams;
+	}
+	public static function getModeAndThings()
+	{
+		// You'll get one of the AstroidGhsvsHelper constants.
+		self::$mode = AstroidGhsvsHelper::preCheck();
 	}
 }
