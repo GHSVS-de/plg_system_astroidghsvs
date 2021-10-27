@@ -22,6 +22,10 @@ let versionSub = '';
 		`./package`,
 		`./dist`,
 		`./src/versions-installed`,
+		// Leads again and again to conflicts in SyncBack and elsewhere.
+		// "Das System kann auf die Datei nicht zugreifen"
+		`${vendorPath}/bin`,
+		`${vendorPath}/scssphp/scssphp/bin`,
 	];
 
 	await helper.cleanOut(cleanOuts);
@@ -38,14 +42,14 @@ let versionSub = '';
 			`Copied "_composer/vendor" to "./package/vendor".`))
 	);
 
-	await fse.copy("./src", "./package"
+	await fse.copy(`./src`, `./package`
 	).then(
 		answer => console.log(chalk.yellowBright(`Copied "./src" to "./package".`))
 	);
 
-	if (!(await fse.exists("./dist")))
+	if (!(await fse.exists(`./dist`)))
 	{
-    	await fse.mkdir("./dist"
+    	await fse.mkdir(`./dist`
 		).then(
 			answer => console.log(chalk.yellowBright(`Created "./dist".`))
 		);
