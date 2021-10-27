@@ -39,13 +39,13 @@
 	"author": {
 		"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
 		"email": "",
-		"url": "https://www.ghsvs.de"
+		"url": "https://ghsvs.de"
 	},
 	"contributors": [
 		{
 			"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
 			"email": "",
-			"url": "https://www.ghsvs.de"
+			"url": "https://ghsvs.de"
 		}
 	],
 	"bugs": "https://github.com/GHSVS-de/plg_system_astroidghsvs/issues",
