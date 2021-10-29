@@ -413,6 +413,7 @@ class AstroidGhsvsHelper
 				//  the void because the page content is already rendered.
 				catch (\Exception $e)
 				{
+					$app = Factory::getApplication();
 					$msg = $e->getMessage() . PHP_EOL . '<br>' . PHP_EOL . '<br><br>';
 					$msg .= '<b>Bitte um Entschuldigung!' . PHP_EOL . '<br><br>' . 'Das Kompilieren der SCSS-Dateien wurde fatal abgebrochen. Das kann an einer Überlastung des Systems liegen oder auch ein Fehler in einer SCSS-Datei sein.' . PHP_EOL . '<br><br>' . '<a href="' . JUri::root() . '">Noch mal probieren? Zur Startseite!</a>.' . PHP_EOL . '<br><br>' . 'Info an Administrator schicken? Danke dafür! <a href="mailto:schraefl-bedachungen@ghsvs.de">schraefl-bedachungen[AT]ghsvs.de</a>.' . PHP_EOL . '<br><br>' . 'Vielen Dank für Ihr Verständnis.</b>';
 					// IN ASTROID TEMPLATES only: In order for the message to be displayed, a new page request
