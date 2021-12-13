@@ -41,6 +41,10 @@
 
 		<note>
 			<item><![CDATA[
+				Joomla-Target-Platform: {{targetplatform}}
+			]]></item>
+
+			<item><![CDATA[
 				Last tests: {{lastTests}}
 			]]></item>
 

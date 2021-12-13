@@ -2,14 +2,17 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2021.10.10",
-	"versionCompare": "2021.10.09",
+	"version": "2021.12.13",
+	"versionCompare": "2021.10.10",
 	"update": {
 		"type": "plugin",
 		"folder": "system",
 		"client": "site",
 		"tag": "stable",
-		"targetplatform": ".*"
+		"targetplatform": [
+			"3.*",
+			"4.*"
+		]
 	},
 	"releaseTxt": {
 		"title": "Joomla system plugin AstroidGhsvs"

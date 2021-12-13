@@ -1,4 +1,4 @@
-<!--{{nameUpper}} Version {{version}}-->
+<!--{{nameUpper}} Version {{version}} Target platform: {{targetplatform}}-->
 	<update>
 		<name>{{nameUpper}}</name>
 		<description>{{description}}</description>
@@ -23,4 +23,4 @@
 		<php_minimum>{{php_minimum}}</php_minimum>
 		{{checksum}}
 	</update>
-<!--/{{nameUpper}} Version {{version}}-->
+<!--/{{nameUpper}} Version {{version}} Target platform: {{targetplatform}}-->
