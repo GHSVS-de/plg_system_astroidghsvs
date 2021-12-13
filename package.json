@@ -60,7 +60,7 @@
 		"scssphp/scssphp"
 	],
 	"private": false,
-	"description": "Joomla system plugin to support templates based on the Astroid framework and others.E.g. for more controllable SCSS compilation.",
+	"description": "Joomla system plugin to support templates based on the Astroid framework and others. E.g. for more controllable SCSS compilation.",
 	"license": "GPL-3.0",
 	"repository": {
 		"type": "git",
@@ -72,11 +72,11 @@
 		"g-ncu-override-json": "ncu -u"
 	},
 	"dependencies": {
-		"npm-check-updates": "^11.8.5"
+		"npm-check-updates": "^12.0.3"
 	},
 	"devDependencies": {
 		"adm-zip": "0.5.9",
-		"commander": "^8.2.0",
+		"commander": "^8.3.0",
 		"fs-extra": "10.0.0",
 		"path": "^0.12.7",
 		"rimraf": "3.0.2"
