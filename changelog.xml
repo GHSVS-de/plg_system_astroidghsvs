@@ -77,6 +77,10 @@
 
 		<requirement>
 			<entry><![CDATA[
+				Requires: {{requires}}
+			]]></entry>
+
+			<entry><![CDATA[
 				minimumPhp: {{minimumPhp}}
 			]]></entry>
 
