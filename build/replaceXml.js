@@ -3,7 +3,7 @@
 'use strict'
 
 const fse = require('fs-extra');
-const chalk = require('chalk');
+const pc = require('picocolors');
 const path = require('path');
 
 const {
@@ -45,6 +45,13 @@ module.exports.main = async (xmlFile, zipFilename, checksum, thisPackages) =>
 		if (! Array.isArray(targetPlatforms))
 		{
 			targetPlatforms = [targetPlatforms];
+		}
+
+		let requires = [];
+
+		if (releaseTxt.requires && releaseTxt.requires.length)
+		{
+			requires = releaseTxt.requires;
 		}
 
 		// Force 1 loop.
@@ -91,6 +98,7 @@ module.exports.main = async (xmlFile, zipFilename, checksum, thisPackages) =>
 			xml = xml.replace(/{{php_minimum}}/g, minimumPhp);
 			xml = xml.replace(/{{projecturl}}/g, changelog.projecturl);
 			xml = xml.replace(/{{releaseTxt.title}}/g, releaseTxt.title);
+			xml = xml.replace(/{{requires}}/g, requires.join("<br>"));
 			xml = xml.replace(/{{tag}}/g, update.tag);
 			xml = xml.replace(/{{targetplatform}}/g, targetplatform);
 			xml = xml.replace(/{{type}}/g, update.type);
@@ -108,8 +116,8 @@ module.exports.main = async (xmlFile, zipFilename, checksum, thisPackages) =>
 
 		await fse.writeFile(xmlFile, fileContent, { encoding: "utf8" }
 		).then(
-		answer => console.log(chalk.greenBright(
-		`Replaced entries in "${xmlFile}".`))
+		answer => console.log(pc.green(pc.bold(
+			`Replaced entries in "${xmlFile}".`)))
 		);
 
     // return true;
