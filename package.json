@@ -2,8 +2,8 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2022.01.06",
-	"versionCompare": "2021.12.13",
+	"version": "2022.01.10",
+	"versionCompare": "2022.01.06",
 	"update": {
 		"type": "plugin",
 		"folder": "system",
@@ -16,7 +16,9 @@
 	},
 	"releaseTxt": {
 		"title": "Joomla system plugin AstroidGhsvs",
-		"requires": []
+		"requires": [
+			"Astroid Framework > 2.5.12 for feature \"removeFields\" if you use an Astroid template and activate that feature."
+		]
 	},
 	"changelog": {
 		"projecturl": "https://github.com/GHSVS-de/plg_system_astroidghsvs",
