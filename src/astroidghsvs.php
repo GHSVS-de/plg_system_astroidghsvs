@@ -2,6 +2,11 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Astroid\Framework;
+use Astroid\Helper;
+use Astroid\Helper\Template;
 
 if (is_dir(JPATH_LIBRARIES . '/astroid/framework/library/astroid'))
 {
@@ -122,5 +127,113 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 	{
 		// You'll get one of the AstroidGhsvsHelper constants.
 		self::$mode = AstroidGhsvsHelper::preCheck();
+	}
+
+	/*
+	See https://github.com/templaza/astroid-framework/commit/397b263242ca80784a8cd1186bcd096687f4ebfa
+	and https://github.com/templaza/astroid-framework/issues/67
+	*/
+	public function onAfterAstroidTemplateFormLoad($template, $form)
+	{
+		if ($this->params->get('removeFields', 0) === 1
+			&& $template->isAstroid && Framework::isAdmin()
+		){
+			$myForm = $form->getForm();
+
+			$removeFieldsByFieldset = [
+				'articles' => 1,
+				'basic' => 1,
+				'astroid_colours' => 1,
+				'astroid_custom' => 1,
+				'astroid_mscellaneous' => 1,
+				'astroid_social' => 1,
+				'astroid_theming' => 1,
+				'astroid_typography' => 1,
+			];
+
+			$css = [];
+			$fieldsets = $myForm->getFieldsets('params');
+
+			foreach ($removeFieldsByFieldset as $fieldsetName => $active)
+			{
+				if (isset($fieldsets[$fieldsetName]) && $active === 1)
+				{
+					$fields = $myForm->getFieldset($fieldsetName);
+					$label = Text::_($fieldsets[$fieldsetName]->label);
+
+					foreach ($fields as $field)
+					{
+							$name = $field->getAttribute('name');
+							$myForm->removeField($name, 'params');
+					}
+
+					$css[$fieldsetName] = 'a#' . $fieldsetName . '-astroid-tab';
+
+					if ($label)
+					{
+						$css[$fieldsetName] .= ',li[data-sidebar-tooltip="' . $label . '"]';
+					}
+				}
+			}
+
+			if ($css)
+			{
+				Framework::getDocument()->addStyleDeclaration(implode(',', $css) . '{display:none}');
+			}
+
+			/*
+			Für leichteres Verständnis z.B.
+				libraries\astroid\framework\options\header.xml
+			*/
+
+			/*
+			Key: Fieldset-Name. Im Unter-Array zu entfernende type="astroidgroup" und
+				zugeordnete Felder mit astroidgroup="astroidgroup-Name".
+			*/
+			$removeFieldsByAstroidGroup = [
+				'astroid_header' => [
+					'header_offcanvas_options_element',
+					'header_animation_options_element',
+				]
+			];
+
+			foreach ($removeFieldsByAstroidGroup as $fieldsetName => $astroidGroups)
+			{
+				if (isset($fieldsets[$fieldsetName]))
+				{
+					$fields = $myForm->getFieldset($fieldsetName);
+
+					foreach ($fields as $field)
+					{
+						$name = $field->getAttribute('name');
+						$isGroupMama = $field->getAttribute('type') === 'astroidgroup'
+							&& in_array($name, $astroidGroups);
+						$isGroupChild = in_array($field->getAttribute('astroidgroup'),
+							$astroidGroups);
+
+						if ($isGroupMama || $isGroupChild)
+						{
+							$myForm->removeField($name, 'params');
+						}
+					}
+				}
+			}
+
+			/*
+			Key: Field-Name. Einzelne Felder, die aus verbleibenden Fieldsets oder
+				astroidgroups entfernt werden sollen.
+			*/
+			$removeFieldsByName = [
+				'mobile_logo' => 1,
+				'enable_sticky_badge' => 1,
+				'dropdown_trigger' => 1,
+				'dropdown_arrow' => 1,
+			];
+
+			foreach ($removeFieldsByName as $name => $active)
+			{
+				$myForm->removeField($name, 'params');
+			}
+		}
 	}
 }
