@@ -45,6 +45,10 @@
 			]]></item>
 
 			<item><![CDATA[
+				Uses: {{uses}}
+			]]></item>
+
+			<item><![CDATA[
 				Last tests: {{lastTests}}
 			]]></item>
 
@@ -69,6 +73,12 @@
 			<item><![CDATA[
 				Checksum: <span style="word-wrap:anywhere;">{{checksumEntity}}</span>
 			]]></item>
+
+			<item><![CDATA[
+				Contained packages (sub Joomla extensions):
+				{{thisPackagesHtml}}
+			]]></item>
+
 		</note>
 
 		<remove>
