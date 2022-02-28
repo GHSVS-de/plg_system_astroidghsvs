@@ -25,7 +25,7 @@ If not done yet:
 - `npm install` (if needed)
 ### Update
 - `npm run g-npm-update-check` or (faster) `npm outdated`
-- `g-npm-update` (if needed) or (faster) `npm update --save-dev`
+- `npm run g-npm-update` (if needed) or (faster) `npm update --save-dev`
 
 ## Composer updates/installation
 - Check/adapt versions in `./_composer/composer.json`. Something to bump in `vendor/`?
