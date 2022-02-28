@@ -2,8 +2,8 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2022.01.10",
-	"versionCompare": "2022.01.06",
+	"version": "2022.02.28",
+	"versionCompare": "2022.01.10",
 	"update": {
 		"type": "plugin",
 		"folder": "system",
@@ -17,7 +17,7 @@
 	"releaseTxt": {
 		"title": "Joomla system plugin AstroidGhsvs",
 		"requires": [
-			"Astroid Framework > 2.5.12 for feature \"removeFields\" if you use an Astroid template and activate that feature."
+			"Astroid Framework greater than 2.5.12 for feature \"removeFields\" if you use an Astroid template and activate that feature."
 		]
 	},
 	"changelog": {
@@ -30,7 +30,7 @@
 			"PHP 8.0",
 			"PHP 7.3",
 			"PHP 7.4",
-			"Joomla 3.10.4",
+			"Joomla 3.10.6",
 			"Joomla 4.0.5"
 		]
 	},
@@ -71,11 +71,10 @@
 	},
 	"scripts": {
 		"g-build": "node build.js",
-		"g-npm-update-check": "ncu",
-		"g-ncu-override-json": "ncu -u"
+		"g-npm-update-check": "npm outdated",
+		"g-npm-update": "npm update --save-dev"
 	},
 	"dependencies": {
-		"npm-check-updates": "^12.1.0"
 	},
 	"devDependencies": {
 		"adm-zip": "0.5.9",
