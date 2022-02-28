@@ -60,7 +60,24 @@ module.exports.main = async (xmlFile, zipFilename, checksum, thisPackages) =>
 			targetPlatforms = [targetPlatforms.join(", ")];
 		}
 
-		// console.log(targetPlatforms);
+		let namespace = update.namespace ?
+			`<namespace path="src">${update.namespace}</namespace>` : "";
+
+		let thisPackagesHtml = '';
+
+		if (thisPackages && thisPackages.length)
+		{
+			thisPackages = thisPackages.join("\n");
+			thisPackagesHtml = thisPackages.replace(/</g, '&lt;');
+			thisPackagesHtml = thisPackagesHtml.replace(/>/g, '&gt;');
+			thisPackagesHtml = `<pre>\n${thisPackagesHtml}\n</pre>`;
+		}
+		else
+		{
+			thisPackages = '';
+		}
+
+		let uses = releaseTxt.uses ? releaseTxt.uses : [];
 
 		let fileContent = '';
 
@@ -94,22 +111,23 @@ module.exports.main = async (xmlFile, zipFilename, checksum, thisPackages) =>
 			xml = xml.replace(/{{minimumPhp}}/g, minimumPhp);
 			xml = xml.replace(/{{name}}/g, name);
 			xml = xml.replace(/{{nameReal}}/g, nameReal);
+			xml = xml.replace(/{{nameRealUpper}}/g, nameReal.toUpperCase());
+			xml = xml.replace(/{{namespace}}/g, namespace);
 			xml = xml.replace(/{{nameUpper}}/g, name.toUpperCase());
+			xml = xml.replace(/{{thisPackages}}/g, thisPackages);
+			xml = xml.replace(/{{thisPackagesHtml}}/g, thisPackagesHtml);
 			xml = xml.replace(/{{php_minimum}}/g, minimumPhp);
 			xml = xml.replace(/{{projecturl}}/g, changelog.projecturl);
 			xml = xml.replace(/{{releaseTxt.title}}/g, releaseTxt.title);
 			xml = xml.replace(/{{requires}}/g, requires.join("<br>"));
 			xml = xml.replace(/{{tag}}/g, update.tag);
 			xml = xml.replace(/{{targetplatform}}/g, targetplatform);
+			xml = xml.replace(/{{targetplatformHtml}}/g, targetplatform.replace(/\*/g, '&ast;'));
 			xml = xml.replace(/{{type}}/g, update.type);
+			xml = xml.replace(/{{uses}}/g, uses.join("<br>"));
 			xml = xml.replace(/{{version}}/g, version);
 			xml = xml.replace(/{{versionCompare}}/g, versionCompare);
 			xml = xml.replace(/{{zipFilename}}/g, zipFilename);
-
-			if (thisPackages && thisPackages.length)
-			{
-				xml = xml.replace(/{{thisPackages}}/g, thisPackages.join("\n"));
-			}
 
 			fileContent = fileContent + xml;
 		}

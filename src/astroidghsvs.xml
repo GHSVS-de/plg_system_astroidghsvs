@@ -39,9 +39,7 @@
 		<folder>src</folder>
 		<folder>vendor</folder>
 	</files>
-
-	<namespace path="src">Joomla\Plugin\System\Astroidghsvs</namespace>
-
+	{{namespace}}
  <config>
   <fields name="params">
    <fieldset name="basic">

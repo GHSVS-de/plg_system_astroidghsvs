@@ -12,13 +12,15 @@
 		"targetplatform": [
 			"3.*",
 			"4.*"
-		]
+		],
+		"namespace": "Joomla\\Plugin\\System\\Astroidghsvs"
 	},
 	"releaseTxt": {
 		"title": "Joomla system plugin AstroidGhsvs",
 		"requires": [
 			"Astroid Framework greater than 2.5.12 for feature \"removeFields\" if you use an Astroid template and activate that feature."
-		]
+		],
+		"uses": ["https://github.com/scssphp/scssphp"]
 	},
 	"changelog": {
 		"projecturl": "https://github.com/GHSVS-de/plg_system_astroidghsvs",
@@ -28,7 +30,6 @@
 		"docsEN": "",
 		"lastTests": [
 			"PHP 8.0",
-			"PHP 7.3",
 			"PHP 7.4",
 			"Joomla 3.10.6",
 			"Joomla 4.0.5"
