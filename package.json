@@ -79,8 +79,7 @@
 	"devDependencies": {
 		"adm-zip": "0.5.9",
 		"picocolors": "^1.0.0",
-		"commander": "^8.3.0",
-		"fs-extra": "10.0.0",
+		"fs-extra": "10.0.1",
 		"path": "^0.12.7",
 		"rimraf": "3.0.2"
 	},
