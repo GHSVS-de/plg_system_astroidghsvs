@@ -2,8 +2,8 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2022.03.08",
-	"versionCompare": "2022.01.10",
+	"version": "2022.05.16",
+	"versionCompare": "2022.03.08",
 	"update": {
 		"type": "plugin",
 		"folder": "system",
@@ -31,8 +31,8 @@
 		"lastTests": [
 			"PHP 8.0",
 			"PHP 7.4",
-			"Joomla 3.10.6",
-			"Joomla 4.1.0"
+			"Joomla 3.10",
+			"Joomla 4.1"
 		]
 	},
 	"minimumPhp": "7.3.0",
@@ -61,10 +61,11 @@
 		"joomla",
 		"system plugin",
 		"Astroid Framework",
+		"Templaza Framework",
 		"scssphp/scssphp"
 	],
 	"private": false,
-	"description": "Joomla system plugin to support templates based on the Astroid framework and others. E.g. for more controllable SCSS compilation.",
+	"description": "Joomla system plugin to support templates based on the Astroid/Templaza framework and others. E.g. for more controllable SCSS compilation.",
 	"license": "GPL-3.0",
 	"repository": {
 		"type": "git",
@@ -72,17 +73,17 @@
 	},
 	"scripts": {
 		"g-build": "node build.js",
-		"g-npm-update-check": "npm outdated",
-		"g-npm-update": "npm update --save-dev"
+		"updateCheck": "npm outdated",
+		"update": "npm update --save-dev"
 	},
 	"dependencies": {
 	},
 	"devDependencies": {
-		"adm-zip": "0.5.9",
+		"adm-zip": "^0.5.9",
 		"picocolors": "^1.0.0",
-		"fs-extra": "10.0.1",
+		"fs-extra": "^10.1.0",
 		"path": "^0.12.7",
-		"rimraf": "3.0.2"
+		"rimraf": "^3.0.2"
 	},
 	"browserslist": []
 }
