@@ -146,6 +146,7 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 				'astroid_colours' => 1,
 				'astroid_custom' => 1,
 				'astroid_mscellaneous' => 1,
+				'preset' => 1,
 				'astroid_social' => 1,
 				'astroid_theming' => 1,
 				'astroid_typography' => 1,
