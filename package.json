@@ -2,8 +2,8 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2022.05.16",
-	"versionCompare": "2022.03.08",
+	"version": "2022.07.04",
+	"versionCompare": "2022.05.16",
 	"update": {
 		"type": "plugin",
 		"folder": "system",
