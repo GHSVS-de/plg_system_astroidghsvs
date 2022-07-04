@@ -72,18 +72,12 @@
 		"url": "https://github.com/GHSVS-de/plg_system_astroidghsvs.git"
 	},
 	"scripts": {
-		"g-build": "node build.js",
+		"build": "node build.js",
 		"updateCheck": "npm outdated",
 		"update": "npm update --save-dev"
 	},
 	"dependencies": {
 	},
-	"devDependencies": {
-		"adm-zip": "^0.5.9",
-		"picocolors": "^1.0.0",
-		"fs-extra": "^10.1.0",
-		"path": "^0.12.7",
-		"rimraf": "^3.0.2"
-	},
+	"devDependencies": {},
 	"browserslist": []
 }

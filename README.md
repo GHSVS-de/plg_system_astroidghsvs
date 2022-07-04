@@ -17,6 +17,9 @@
 -----------------------------------------------------
 
 # My personal build procedure (WSL 1, Debian, Win 10)
+
+**@since versions greater than 2022.05.16_1.10.3.0: Build procedure uses local repo fork of https://github.com/GHSVS-de/buildKramGhsvs**
+
 - Prepare/adapt `./package.json`.
 - `cd /mnt/z/git-kram/plg_system_astroidghsvs`
 

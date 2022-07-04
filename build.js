@@ -1,8 +1,18 @@
-const fse = require('fs-extra');
-const pc = require('picocolors');
+#!/usr/bin/env node
 const path = require('path');
-const replaceXml = require('./build/replaceXml.js');
-const helper = require('./build/helper.js');
+
+/* Configure START */
+const pathBuildKram = path.resolve("../buildKramGhsvs");
+const updateXml = `${pathBuildKram}/build/update.xml`;
+const changelogXml = `${pathBuildKram}/build/changelog.xml`;
+const releaseTxt = `${pathBuildKram}/build/release.txt`;
+/* Configure END */
+
+const replaceXml = require(`${pathBuildKram}/build/replaceXml.js`);
+const helper = require(`${pathBuildKram}/build/helper.js`);
+
+const pc = require(`${pathBuildKram}/node_modules/picocolors`);
+const fse = require(`${pathBuildKram}/node_modules/fs-extra`);
 
 const {
 	name,
@@ -26,7 +36,6 @@ let versionSub = '';
 		`${vendorPath}/bin`,
 		`${vendorPath}/scssphp/scssphp/bin`,
 	];
-
 	await helper.cleanOut(cleanOuts);
 
 	versionSub = await helper.findVersionSub (
@@ -38,90 +47,55 @@ let versionSub = '';
 
 	let from = vendorPath;
 	let to = `./package/vendor`;
-	await fse.copy(from, to
-	).then(
-		answer => console.log(
-			pc.yellow(pc.bold(`Copied "${from}" to "${to}".`))
-		)
-	);
+	await helper.copy(from, to)
 
 	from = `./src`;
 	to = `./package`;
-	await fse.copy(from, to
-	).then(
-		answer => console.log(
-			pc.yellow(pc.bold(`Copied "${from}" to "${to}".`))
-		)
-	);
+	await helper.copy(from, to)
 
-	if (!(await fse.exists("./dist")))
-	{
-		await fse.mkdir("./dist"
-		).then(
-			answer => console.log(pc.yellow(pc.bold(`Created "./dist".`)))
-		);
-  }
+	await helper.mkdir('./dist');
 
 	const zipFilename = `${name}-${version}_${versionSub}.zip`;
 
-	await replaceXml.main(Manifest, zipFilename);
-	await fse.copy(`${Manifest}`, `./dist/${manifestFileName}`).then(
-		answer => console.log(pc.yellow(pc.bold(
-			`Copied "${manifestFileName}" to "./dist".`)))
-	);
+	replaceXmlOptions = {
+		"xmlFile": Manifest,
+		"zipFilename": zipFilename,
+		"checksum": "",
+		"dirname": __dirname
+	};
+
+	await replaceXml.main(replaceXmlOptions);
+	from = Manifest;
+	to = `./dist/${manifestFileName}`;
+	await helper.copy(from, to)
 
 	cleanOuts = [
 		`${__dirname}/package/vendor/bin`,
 		`${__dirname}/package/vendor/scssphp/scssphp/bin`,
 	];
-
 	await helper.cleanOut(cleanOuts);
 
-	// Create zip file and detect checksum then.
-	const zipFilePath = `./dist/${zipFilename}`;
+	// ## Create zip file and detect checksum then.
+	const zipFilePath = path.resolve(`./dist/${zipFilename}`);
 
-	const zip = new (require('adm-zip'))();
-	zip.addLocalFolder("package", false);
-	await zip.writeZip(`${zipFilePath}`);
-	console.log(pc.cyan(pc.bold(pc.bgRed(
-		`./dist/${zipFilename} written.`))));
+	zipOptions = {
+		"source": path.resolve("package"),
+		"target": zipFilePath
+	};
+	await helper.zip(zipOptions)
 
-	const Digest = 'sha256'; //sha384, sha512
-	const checksum = await helper.getChecksum(zipFilePath, Digest)
-  .then(
-		hash => {
-			const tag = `<${Digest}>${hash}</${Digest}>`;
-			console.log(pc.green(pc.bold(`Checksum tag is: ${tag}`)));
-			return tag;
-		}
-	)
-	.catch(error => {
-		console.log(error);
-		console.log(pc.red(pc.bold(
-			`Error while checksum creation. I won't set one!`)));
-		return '';
-	});
+	replaceXmlOptions.checksum = await helper._getChecksum(zipFilePath);
 
-	let xmlFile = 'update.xml';
-	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
-		answer => console.log(pc.yellow(pc.bold(
-			`Copied "${xmlFile}" to ./dist.`)))
-	);
-	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
+	// Bei diesen werden zuerst Vorlagen nach dist/ kopiert und dort erst "replaced".
+	for (const file of [updateXml, changelogXml, releaseTxt])
+	{
+		from = file;
+		to = `./dist/${path.win32.basename(file)}`;
+		await helper.copy(from, to)
 
-	xmlFile = 'changelog.xml';
-	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
-		answer => console.log(pc.yellow(pc.bold(
-			`Copied "${xmlFile}" to ./dist.`)))
-	);
-	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
-
-	xmlFile = 'release.txt';
-	await fse.copy(`./${xmlFile}`, `./dist/${xmlFile}`).then(
-		answer => console.log(pc.yellow(pc.bold(
-			`Copied "${xmlFile}" to ./dist.`)))
-	);
-	await replaceXml.main(`${__dirname}/dist/${xmlFile}`, zipFilename, checksum);
+		replaceXmlOptions.xmlFile = path.resolve(to);
+		await replaceXml.main(replaceXmlOptions);
+	}
 
 	cleanOuts = [
 		`./package`,
