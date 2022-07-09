@@ -539,9 +539,12 @@ class AstroidGhsvsHelper
 			{
 				$cssFilePostfix = '';
 				$fileName = explode('|', $fileName);
+				$fileNameAbs = self::$scssFolderAbs . '/' . $fileName[0] . '.scss';
 
-				if (is_file(self::$scssFolderAbs . '/' . $fileName[0] . '.scss'))
+				if (is_file($fileNameAbs))
 				{
+					self::debug('$filesToCompile: Start file: ' . $fileName[0]);
+
 					// A '|' found after filename. Means don't insert in <head>, just compile.
 					if (isset($fileName[1]))
 					{
@@ -555,6 +558,10 @@ class AstroidGhsvsHelper
 
 					// Key: CSS file name. Value: SCSS file name.
 					self::$collectedFiles[$fileName[0] . $cssFilePostfix] = $fileName[0];
+				}
+				else
+				{
+					self::debug('$filesToCompile: File not found: ' . $fileNameAbs);
 				}
 			}
 		}
