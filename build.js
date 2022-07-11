@@ -12,7 +12,12 @@ const replaceXml = require(`${pathBuildKram}/build/replaceXml.js`);
 const helper = require(`${pathBuildKram}/build/helper.js`);
 
 const pc = require(`${pathBuildKram}/node_modules/picocolors`);
-const fse = require(`${pathBuildKram}/node_modules/fs-extra`);
+//const fse = require(`${pathBuildKram}/node_modules/fs-extra`);
+
+let replaceXmlOptions = {};
+let zipOptions = {};
+let from = "";
+let to = "";
 
 const {
 	name,
@@ -45,8 +50,8 @@ let versionSub = '';
 
 	await console.log(pc.red(pc.bold(`Be patient! Composer copy actions!`)));
 
-	let from = vendorPath;
-	let to = `./package/vendor`;
+	from = vendorPath;
+	to = `./package/vendor`;
 	await helper.copy(from, to)
 
 	from = `./src`;
