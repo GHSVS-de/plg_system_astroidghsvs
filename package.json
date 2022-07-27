@@ -30,12 +30,13 @@
 		"docsEN": "",
 		"lastTests": [
 			"PHP 8.0",
+			"PHP 8.1",
 			"PHP 7.4",
 			"Joomla 3.10",
 			"Joomla 4.1"
 		]
 	},
-	"minimumPhp": "7.3.0",
+	"minimumPhp": "7.4.0",
 	"maximumPhp": "8.99999.99999",
 	"minimumJoomla": "3.9.24",
 	"maximumJoomla": "4.9999.9999",
@@ -45,13 +46,11 @@
 	"copyright": "(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)",
 	"author": {
 		"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
-		"email": "",
 		"url": "https://ghsvs.de"
 	},
 	"contributors": [
 		{
 			"name": "G@HService Berlin Neukölln, Volkmar Volli Schlothauer",
-			"email": "",
 			"url": "https://ghsvs.de"
 		}
 	],
@@ -65,7 +64,7 @@
 		"scssphp/scssphp"
 	],
 	"private": false,
-	"description": "Joomla system plugin to support templates based on the Astroid/Templaza framework and others. E.g. for more controllable SCSS compilation.",
+	"description": "Joomla system plugin to support templates based on the Astroid/Templaza framework AND also other templates. E.g. for more controllable SCSS compilation.",
 	"license": "GPL-3.0",
 	"repository": {
 		"type": "git",
