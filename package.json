@@ -20,7 +20,11 @@
 		"requires": [
 			"Astroid Framework greater than 2.5.12 for feature \"removeFields\" if you use an Astroid template and activate that feature."
 		],
-		"uses": ["https://github.com/scssphp/scssphp"]
+		"uses": ["https://github.com/scssphp/scssphp"],
+		"language": [
+			"de-DE",
+			"en-GB"
+		]
 	},
 	"changelog": {
 		"projecturl": "https://github.com/GHSVS-de/plg_system_astroidghsvs",
