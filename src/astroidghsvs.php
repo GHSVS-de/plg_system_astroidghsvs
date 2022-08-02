@@ -42,6 +42,8 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
+		self::$isJ3 = version_compare(JVERSION, '4', 'lt');
+
 		// Lade bzw. registriere Namespaces für ScssPHP früh. Keine Garantie,
 		//  dass das klappt.
 		if (
@@ -242,5 +244,16 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 				$myForm->removeField($name, 'params');
 			}
 		}
+	}
+
+	public static function getWa()
+	{
+		if (self::$isJ3 === false && empty(self::$wa))
+		{
+			self::$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+			self::$wa->getRegistry()->addExtensionRegistryFile('plg_system_astroidghsvs');
+		}
+
+		return self::$wa;
 	}
 }
