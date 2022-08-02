@@ -121,6 +121,16 @@
 				<option value="-2">Disable but include existing CSS [-2]</option>
 			</field>
 
+			<field name="gzFilesSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_GZFILES"
+				description="PLG_SYSTEM_ASTROIDGHSVS_GZFILES_DESC" />
+
+			<field name="gzFiles" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_GZFILES">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
 			<field name="sourceMapsSpacer" type="note"
 				label="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS"
 				description="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS_DESC" />

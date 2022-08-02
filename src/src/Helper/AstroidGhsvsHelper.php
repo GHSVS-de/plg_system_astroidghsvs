@@ -162,6 +162,7 @@ class AstroidGhsvsHelper
 
 		if (self::$compileSettings['forceSCSSCompilingGhsvs'] >= 0)
 		{
+			self::debug('Mode RUNSCSSGHSVS detected. Let us see... ');
 			return (self::$mode = self::RUNSCSSGHSVS);
 		}
 
@@ -400,6 +401,18 @@ class AstroidGhsvsHelper
 
 						$css = self::$compiler->compile($content);
 						file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
+
+						$gzFilename = self::$cssFolderAbs . '/' . $outputFileName . '.gz';
+
+						if (self::$pluginParams->get('gzFiles', 1) === 1)
+						{
+							$gzFile = gzencode($css, $level = 9, FORCE_GZIP);
+							file_put_contents($gzFilename, $gzFile);
+						}
+						else
+						{
+							unlink($gzFilename);
+						}
 						##### MINIFIED END #####
 
 						self::buildLink($fileName, $cssFileName);
