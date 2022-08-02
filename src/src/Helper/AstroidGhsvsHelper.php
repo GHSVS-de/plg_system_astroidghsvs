@@ -599,9 +599,20 @@ class AstroidGhsvsHelper
 			}
 			else
 			{
+				if (($wa =  PlgSystemAstroidGhsvs::getWa()))
+				{
+					$waName = 'plg_system_astroidghsvs.' . str_replace('/', '.', $href);
+					$wa->registerStyle(
+						$waName,
+						$href, ['version' => self::$template->myMediaVersion]
+					)->useStyle($waName);
+				}
+				else
+				{
 				HTMLHelper::_('stylesheet', $href,
 					['version' => self::$template->myMediaVersion, 'relative' => true]
 				);
+				}
 			}
 		}
 	}
