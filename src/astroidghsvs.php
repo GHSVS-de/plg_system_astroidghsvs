@@ -32,6 +32,12 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 		PlgSystemAstroidGhsvs::getPluginParams. */
 	protected static $plgParams;
 
+	// Also usable in other files via PlgSystemBS3Ghsvs::$isJ3.
+	public static $isJ3 = true;
+
+	// Used in other files via $wa =  PlgSystemAstroidGhsvs::getWa().
+	protected static $wa = null;
+
 	function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
