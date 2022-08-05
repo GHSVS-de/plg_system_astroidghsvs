@@ -409,7 +409,7 @@ class AstroidGhsvsHelper
 							$gzFile = gzencode($css, $level = 9, FORCE_GZIP);
 							file_put_contents($gzFilename, $gzFile);
 						}
-						else
+						elseif (is_file($gzFilename))
 						{
 							unlink($gzFilename);
 						}
