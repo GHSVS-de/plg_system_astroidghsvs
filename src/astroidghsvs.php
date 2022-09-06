@@ -148,6 +148,7 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 		){
 			$myForm = $form->getForm();
 
+			/* Siehe libraries\astroid\framework\options\*.xml */
 			$removeFieldsByFieldset = [
 				'articles' => 1,
 				'basic' => 1,
@@ -180,7 +181,14 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 
 					if ($label)
 					{
+						// Beachte leitendes Komma!
 						$css[$fieldsetName] .= ',li[data-sidebar-tooltip="' . $label . '"]';
+					}
+
+					if ($fieldsetName === 'preset')
+					{
+						// Beachte leitendes Komma!
+						$css[$fieldsetName] .= ',#astroid-form-fieldset-section-layout_group .astroid-form-preset-load.dropdown';
 					}
 				}
 			}
