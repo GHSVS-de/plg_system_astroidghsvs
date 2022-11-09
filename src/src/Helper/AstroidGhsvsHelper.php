@@ -380,7 +380,7 @@ class AstroidGhsvsHelper
 							self::setOrResetSourceMap();
 						}
 
-						$css = self::$compiler->compile($content);
+						$css = self::$compiler->compileString($content)->getCss();
 						file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
 						##### UNMINIFIED END #####
 
@@ -399,7 +399,7 @@ class AstroidGhsvsHelper
 							self::setOrResetSourceMap();
 						}
 
-						$css = self::$compiler->compile($content);
+						$css = self::$compiler->compileString($content)->getCss();
 						file_put_contents(self::$cssFolderAbs . '/' . $outputFileName, $css);
 
 						$gzFilename = self::$cssFolderAbs . '/' . $outputFileName . '.gz';
