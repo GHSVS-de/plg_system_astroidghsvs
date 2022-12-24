@@ -1,3 +1,5 @@
+# NOT CHILD TEMPLATES READY!
+
 # plg_system_astroidghsvs
 
 - Don't use it if you don't need it. Needs some skills and background knowledge.
