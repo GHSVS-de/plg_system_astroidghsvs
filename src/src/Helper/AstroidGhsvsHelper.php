@@ -11,6 +11,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\HTML\HTMLHelper;
 
+#[\AllowDynamicProperties]
 class AstroidGhsvsHelper
 {
 	/* prerequites fail. Do absolutely nothing! */
