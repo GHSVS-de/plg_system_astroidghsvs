@@ -3,9 +3,9 @@ const path = require('path');
 
 /* Configure START */
 const pathBuildKram = path.resolve("../buildKramGhsvs");
-const updateXml = `${pathBuildKram}/build/update.xml`;
-const changelogXml = `${pathBuildKram}/build/changelog.xml`;
-const releaseTxt = `${pathBuildKram}/build/release.txt`;
+const updateXml = `${pathBuildKram}/build/update_no-changelog.xml`;
+// const changelogXml = `${pathBuildKram}/build/changelog.xml`;
+const releaseTxt = `${pathBuildKram}/build/release_no-changelog.txt`;
 /* Configure END */
 
 const replaceXml = require(`${pathBuildKram}/build/replaceXml.js`);
@@ -14,28 +14,28 @@ const helper = require(`${pathBuildKram}/build/helper.js`);
 const pc = require(`${pathBuildKram}/node_modules/picocolors`);
 //const fse = require(`${pathBuildKram}/node_modules/fs-extra`);
 
+let {
+	name,
+	filename,
+	version,
+	versionSub
+} = require("./package.json");
+
+const manifestFileName = `${filename}.xml`;
+const Manifest = `${__dirname}/package/${manifestFileName}`;
+const vendorPath = `./_composer/vendor`;
+
 let replaceXmlOptions = {
 	"xmlFile": '',
 	"zipFilename": '',
 	"checksum": '',
 	"dirname": __dirname,
 	"jsonString": '',
-	"versionSub": ''
+	"versionSub": versionSub
 };
 let zipOptions = {};
 let from = "";
 let to = "";
-
-const {
-	name,
-	filename,
-	version,
-} = require("./package.json");
-
-const manifestFileName = `${filename}.xml`;
-const Manifest = `${__dirname}/package/${manifestFileName}`;
-const vendorPath = `./_composer/vendor`;
-let versionSub = '';
 
 (async function exec()
 {
@@ -98,7 +98,7 @@ let versionSub = '';
 	replaceXmlOptions.checksum = await helper._getChecksum(zipFilePath);
 
 	// Bei diesen werden zuerst Vorlagen nach dist/ kopiert und dort erst "replaced".
-	for (const file of [updateXml, changelogXml, releaseTxt])
+	for (const file of [updateXml, releaseTxt])
 	{
 		from = file;
 		to = `./dist/${path.win32.basename(file)}`;
