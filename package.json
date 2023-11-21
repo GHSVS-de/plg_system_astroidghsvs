@@ -69,7 +69,7 @@
 		"scssphp/scssphp"
 	],
 	"private": false,
-	"description": "Joomla system plugin to support templates based on the Astroid/Templaza framework AND also other templates. E.g. for more controllable SCSS compilation.",
+	"description": "Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.",
 	"license": "GPL-3.0",
 	"repository": {
 		"type": "git",
