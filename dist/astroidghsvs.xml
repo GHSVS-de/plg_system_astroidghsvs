@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_ASTROIDGHSVS</name>
+	<author>G@HService Berlin Neukölln, Volkmar Volli Schlothauer</author>
+	<creationDate>2021-01-12</creationDate>
+	<copyright>(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</copyright>
+	<license>GNU General Public License version 3 or later; see LICENSE.txt.</license>
+	<authorUrl>https://ghsvs.de</authorUrl>
+	<version>2023.11.21</version>
+ 	<description>PLG_SYSTEM_ASTROIDGHSVS_XML_DESCRIPTION</description>
+
+	<updateservers>
+		<server type="extension" priority="1" name="PLG_SYSTEM_ASTROIDGHSVS">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml</server>
+	</updateservers>
+
+	<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2023.11.21</infourl>
+
+	<scriptfile>installerScript.php</scriptfile>
+	<minimumPhp>7.4.0</minimumPhp>
+	<maximumPhp></maximumPhp>
+	<minimumJoomla>3.9.24</minimumJoomla>
+	<maximumJoomla>5.9999.9999</maximumJoomla>
+	<allowDowngrades>1</allowDowngrades>
+
+	<files>
+		<filename plugin="astroidghsvs">astroidghsvs.php</filename>
+		<filename>installerScript.php</filename>
+		<filename>LICENSE.txt</filename>
+		<folder>exampleScaffold</folder>
+		<folder>language</folder>
+		<folder>src</folder>
+		<folder>vendor</folder>
+	</files>
+	<namespace path="src">GHSVS\Plugin\System\Astroidghsvs</namespace>
+ <config>
+  <fields name="params">
+   <fieldset name="basic">
+    <field type="hidden" default="1" name="astroidghsvsplugin" />
+   </fieldset>
+		<fieldset name="Einstellungen" label="Einstellungen">
+
+			<field name="loadScssPhpEarlySpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY"
+				description="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY_DESC" />
+
+			<field name="loadScssPhpEarly" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+
+			<field name="debugSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_DEBUG"
+				description="PLG_SYSTEM_ASTROIDGHSVS_DEBUG_DESC" />
+
+			<field name="debug" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_DEBUG">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+
+			<field name="placeHolderModeSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE"
+				description="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE_DESC" />
+
+			<field name="placeHolderMode" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_PLACEHOLDERMODE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+			</field>
+
+			<field name="includeStyleIdSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID"
+				description="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID_DESC" />
+
+			<field name="includeStyleId" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_INCLUDESTYLEID">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+			</field>
+
+			<field name="scssFolderSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER"
+				description="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER_DESC" />
+
+			<field name="scssFolder" type="list" default="scss-ghsvs" filter="string"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SCSSFOLDER">
+					<option value="scss-ghsvs">scss-ghsvs</option>
+					<option value="scss">scss</option>
+			</field>
+
+			<field name="ignoreAstroidVariablesSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_IGNOREASTROIDVARIABLES"
+				description="PLG_SYSTEM_ASTROIDGHSVS_IGNOREASTROIDVARIABLES_DESC" />
+
+			<field name="ignoreAstroidVariables" type="list" default="0"
+				filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_IGNOREASTROIDVARIABLES">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+
+			<field name="forceSCSSCompilingGhsvsSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS"
+				description="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS_DESC"/>
+
+			<field name="forceSCSSCompilingGhsvs" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_FORCESCSSCOMPILINGGHSVS"
+				description="">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				<option value="-1">Disable completely [-1]</option>
+				<option value="-2">Disable but include existing CSS [-2]</option>
+			</field>
+
+			<field name="gzFilesSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_GZFILES"
+				description="PLG_SYSTEM_ASTROIDGHSVS_GZFILES_DESC" />
+
+			<field name="gzFiles" type="list" default="1" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_GZFILES">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="sourceMapsSpacer" type="note"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS"
+				description="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS_DESC" />
+
+			<field name="sourceMaps" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_SOURCEMAPS">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="forceSCSSUtf8GhsvsSpacer" type="note"
+				label="SCSS-Kompliierung: UTF-8 forcieren?"/>
+
+			<field name="forceSCSSUtf8Ghsvs" type="list" default="0" filter="integer"
+				label="[forceSCSSUtf8Ghsvs]">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+
+		</fieldset>
+
+		<fieldset name="Einstellungen2" label="Einstellungen 2">
+
+			<field name="removeFieldsSpacer" type="note"
+				class="alert alert-info"
+				label="PLG_SYSTEM_ASTROIDGHSVS_REMOVEFIELDS"
+				description="PLG_SYSTEM_ASTROIDGHSVS_REMOVEFIELDS_DESC"/>
+
+			<field name="removeFields" type="list" default="0" filter="integer"
+				label="PLG_SYSTEM_ASTROIDGHSVS_REMOVEFIELDS">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+		</fieldset>
+  </fields>
+ </config>
+</extension>
