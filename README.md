@@ -2,15 +2,14 @@
 
 # plg_system_astroidghsvs
 
-- Don't use it if you don't need it. Needs some skills and background knowledge.
+- Don't use it if you don't need it. _**Needs some skills and background knowledge.**_
 - Helper plugin for ghsvs.de for Astroid Framework (since 2.4.7) templates.
 - And other templates that want to use the on-the-fly feature to compile SCSS via scssphp/scssphp library.
 - Or if you want to use the included library [scssphp/scssphp](https://github.com/scssphp/scssphp) elsewhere and load it early.
 
-
 1) Compile SCSS with the library "scssphp/scssphp" included in this plugin instead of the library packed with Astroid Framework (this library was not up-to-date enough for my needs and is updated too rarely)..
 
-2) Create .css and .min.css files. Create sourcemaps.
+2) Create .css and .min.css files. Create sourcemaps. Create .min.css.gz files.
 
 3) Helps to compile SCSS independently of the Astroid framework. Separate SCSS folders, separate SCSS structure. However, the template index.php code must be prepared accordingly (special overrides and so on).
 
@@ -69,5 +68,5 @@ composer update
 
 ### For Joomla update and changelog server
 - Create new release with new tag.
-- - See and copy and complete release description in `dist/release.txt`.
-- Extracts(!) of the update and changelog XML for update and changelog servers are in `./dist` as well. Copy/paste and make necessary additions.
+  - See and copy and complete release description in `dist/release_no-chengelog.txt`.
+- Extracts(!) of the update XML for update servers are in `./dist` as well.
