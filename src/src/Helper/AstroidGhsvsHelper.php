@@ -108,6 +108,20 @@ class AstroidGhsvsHelper
 	protected static $debug = 0;
 	protected static $logFile;
 
+	/*
+	@since 2023-12
+	Bug fix Creation of dynamic property Astroid\Template::$myPath is deprecated
+	*/
+	//
+	public static $templateMyPath;
+
+	/*
+	@since 2023-12
+	Bug fix Creation of dynamic property Astroid\Template::$myMediaVersion is deprecated
+	*/
+	//
+	public static $templateMyMediaVersion;
+
 	/** We need some checks BEFORE Atroid renders the template.
 	* E.g. to detect if HTMLHelper must be used or not.
 	*/
@@ -270,7 +284,7 @@ class AstroidGhsvsHelper
 
 			#### Last compile time is...? Has something changed? New compilation or not?
 
-			$ghsvsHashFile = 'ghsvsHash-' . self::$template->myMediaVersion
+			$ghsvsHashFile = 'ghsvsHash-' . self::$templateMyMediaVersion
 				. '.ghsvsHash';
 
 			if ($force === 0)
@@ -476,7 +490,7 @@ class AstroidGhsvsHelper
 				self::$template = Factory::getApplication()->getTemplate(true);
 			}
 
-			self::$template->myPath = 'templates/' . self::$template->template;
+			self::$templateMyPath = 'templates/' . self::$template->template;
 
 			// At least needed for mediaVersion:
 			if (empty(self::$template->id))
@@ -498,9 +512,9 @@ class AstroidGhsvsHelper
 			/* Create hash file name. Is indicator if settings have been changed.
 			Be aware if JDEBUG that self::$template changes with each call! Because it includes
 			the Joomla the changing mediaVersion as property.
-			Therefore	self::$template->myMediaVersion, too. In debug mode => always compilation.
+			Therefore	self::$templateMyMediaVersion, too. In debug mode => always compilation.
 			*/
-			self::$template->myMediaVersion = self::$template->id . '_' . md5(
+			self::$templateMyMediaVersion = self::$template->id . '_' . md5(
 				serialize(self::$compileSettings) . serialize(self::$collectedFiles)
 				. serialize(self::$pluginParams->toArray())
 				. '_' . self::$template->hash);
@@ -516,7 +530,7 @@ class AstroidGhsvsHelper
 		if (self::$scssFolderAbs === null)
 		{
 			self::getTemplateData();
-			$templatePathAbs = JPATH_SITE . '/' . self::$template->myPath;
+			$templatePathAbs = JPATH_SITE . '/' . self::$templateMyPath;
 			self::$scssFolderAbs = $templatePathAbs . '/'
 				. self::$compileSettings['scssFolder'];
 			self::$cssFolderAbs = $templatePathAbs . '/'
@@ -530,7 +544,7 @@ class AstroidGhsvsHelper
 			// Normally only in Astroid templates.
 			if (self::$compileSettings['placeHolderMode'] === true)
 			{
-				self::$cssLink = Uri::root() . self::$template->myPath . '/'
+				self::$cssLink = Uri::root() . self::$templateMyPath . '/'
 					. self::$compileSettings['cssFolder'] . '/';
 			}
 		}
@@ -607,7 +621,7 @@ class AstroidGhsvsHelper
 
 			if (self::$compileSettings['placeHolderMode'] === true)
 			{
-				$href .= '?' . self::$template->myMediaVersion;
+				$href .= '?' . self::$templateMyMediaVersion;
 				self::$replaceWith .= '<link href="' . $href
 				. '" rel="stylesheet" />' . PHP_EOL;
 			}
@@ -618,13 +632,13 @@ class AstroidGhsvsHelper
 					$waName = 'plg_system_astroidghsvs.' . str_replace('/', '.', $href);
 					$wa->registerStyle(
 						$waName,
-						$href, ['version' => self::$template->myMediaVersion]
+						$href, ['version' => self::$templateMyMediaVersion]
 					)->useStyle($waName);
 				}
 				else
 				{
 				HTMLHelper::_('stylesheet', $href,
-					['version' => self::$template->myMediaVersion, 'relative' => true]
+					['version' => self::$templateMyMediaVersion, 'relative' => true]
 				);
 				}
 			}
