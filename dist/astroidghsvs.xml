@@ -6,14 +6,14 @@
 	<copyright>(C) 2021, G@HService Berlin Neukölln, Volkmar Volli Schlothauer (ghsvs.de)</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt.</license>
 	<authorUrl>https://ghsvs.de</authorUrl>
-	<version>2023.11.21</version>
+	<version>2024.01.15</version>
  	<description>PLG_SYSTEM_ASTROIDGHSVS_XML_DESCRIPTION</description>
 
 	<updateservers>
 		<server type="extension" priority="1" name="PLG_SYSTEM_ASTROIDGHSVS">https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml</server>
 	</updateservers>
 
-	<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2023.11.21</infourl>
+	<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2024.01.15</infourl>
 
 	<scriptfile>installerScript.php</scriptfile>
 	<minimumPhp>7.4.0</minimumPhp>

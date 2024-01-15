@@ -1,4 +1,4 @@
-<!--PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 3.*-->
+<!--PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 3.*-->
 	<update>
 		<name>PLG_SYSTEM_ASTROIDGHSVS</name>
 		<description>Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.</description>
@@ -6,10 +6,10 @@
 		<type>plugin</type>
 		<folder>system</folder>
 		<client>site</client>
-		<version>2023.11.21</version>
-		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2023.11.21</infourl>
+		<version>2024.01.15</version>
+		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2024.01.15</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2023.11.21/dist/plg_system_astroidghsvs-2023.11.21_1.12.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.01.15/dist/plg_system_astroidghsvs-2024.01.15_1.12.1.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -18,10 +18,10 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="3.*" />
 		<php_minimum>7.4.0</php_minimum>
-		<sha256>0bb6469b5b7d133f270eda98d1fa32e3e81b946fe1e11e963a53284e227969b1</sha256>
+		<sha256>ec83044e4f0dd47440a064274838fa4ef9f71f5a0da8caca77ebe6e3ff8e2db9</sha256>
 	</update>
-<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 3.*-->
-<!--PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 4.*-->
+<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 3.*-->
+<!--PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 4.*-->
 	<update>
 		<name>PLG_SYSTEM_ASTROIDGHSVS</name>
 		<description>Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.</description>
@@ -29,10 +29,10 @@
 		<type>plugin</type>
 		<folder>system</folder>
 		<client>site</client>
-		<version>2023.11.21</version>
-		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2023.11.21</infourl>
+		<version>2024.01.15</version>
+		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2024.01.15</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2023.11.21/dist/plg_system_astroidghsvs-2023.11.21_1.12.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.01.15/dist/plg_system_astroidghsvs-2024.01.15_1.12.1.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -41,10 +41,10 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="4.*" />
 		<php_minimum>7.4.0</php_minimum>
-		<sha256>0bb6469b5b7d133f270eda98d1fa32e3e81b946fe1e11e963a53284e227969b1</sha256>
+		<sha256>ec83044e4f0dd47440a064274838fa4ef9f71f5a0da8caca77ebe6e3ff8e2db9</sha256>
 	</update>
-<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 4.*-->
-<!--PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 5.*-->
+<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 4.*-->
+<!--PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 5.*-->
 	<update>
 		<name>PLG_SYSTEM_ASTROIDGHSVS</name>
 		<description>Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.</description>
@@ -52,10 +52,10 @@
 		<type>plugin</type>
 		<folder>system</folder>
 		<client>site</client>
-		<version>2023.11.21</version>
-		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2023.11.21</infourl>
+		<version>2024.01.15</version>
+		<infourl>https://github.com/GHSVS-de/plg_system_astroidghsvs/releases/tag/2024.01.15</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2023.11.21/dist/plg_system_astroidghsvs-2023.11.21_1.12.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.01.15/dist/plg_system_astroidghsvs-2024.01.15_1.12.1.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -64,6 +64,6 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="5.*" />
 		<php_minimum>7.4.0</php_minimum>
-		<sha256>0bb6469b5b7d133f270eda98d1fa32e3e81b946fe1e11e963a53284e227969b1</sha256>
+		<sha256>ec83044e4f0dd47440a064274838fa4ef9f71f5a0da8caca77ebe6e3ff8e2db9</sha256>
 	</update>
-<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2023.11.21 Target platform: 5.*-->
+<!--/PLG_SYSTEM_ASTROIDGHSVS Version 2024.01.15 Target platform: 5.*-->
