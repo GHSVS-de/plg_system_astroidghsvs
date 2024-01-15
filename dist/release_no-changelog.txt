@@ -12,7 +12,7 @@ Joomla system plugin to support templates based on the Astroid/Templaza framewor
 
 ### For the interested ones
 - Fix Creation of dynamic property is deprecated
-- Bump scssphp/scssphp (v1.12.0 => v1.12.1)
+- Bump scssphp/scssphp (v1.12.0 to v1.12.1)
 - Deutsche Beschreibung:
 - English Description:
 - [Compare releases 2023.11.21...2024.01.15](https://github.com/GHSVS-de/plg_system_astroidghsvs/compare/2023.11.21...2024.01.15)
