@@ -576,29 +576,49 @@ class AstroidGhsvsHelper
 			self::$collectedFiles = [];
 			self::getWorkPaths();
 
-			foreach (self::$filesToCompile as $key => $fileName)
+			/*
+			$fileValues always starts with scss filename w\o extension followed by
+			optional paras separated by |.
+			e.g. test|noInsert
+			Means: Compile the CSS file but don't insert css file in <head>.
+
+			Crux (B\C hell): If noInsert is NOT set the CSS file gets a template style
+			ID as postfix IF plugin setting includeStyleId is YES.
+			To avoid that use
+			test|noStyleId
+			Means: Create CSS file without an ID postfix in filename. Insert that css
+			file in <head>.
+			*/
+			foreach (self::$filesToCompile as $key => $fileValues)
 			{
 				$cssFilePostfix = '';
-				$fileName = explode('|', $fileName);
-				$fileNameAbs = self::$scssFolderAbs . '/' . $fileName[0] . '.scss';
+				$fileValues = explode('|', $fileValues);
+
+				// The scss file without extension.
+				$fileName = $fileValues[0];
+
+				// The absolute scss file path with extension.
+				$fileNameAbs = self::$scssFolderAbs . '/' . $fileName . '.scss';
 
 				if (is_file($fileNameAbs))
 				{
-					self::debug('$filesToCompile: Start file: ' . $fileName[0]);
+					self::debug('$filesToCompile: Start file: ' . $fileName);
 
-					// A '|' found after filename. Means don't insert in <head>, just compile.
-					if (isset($fileName[1]))
+					// Means: Don't insert in <head>, just compile. No ID postfix.
+					if (in_array('noInsert', $fileValues))
 					{
-						self::$doNotInsert[$fileName[0]] = 1;
+						self::$doNotInsert[$fileName] = 1;
 					}
-					elseif (self::$compileSettings['includeStyleId'] === true)
-					{
+					elseif (
+						self::$compileSettings['includeStyleId'] === true
+						&& !in_array('noStyleId', $fileValues)
+					){
 						self::getTemplateData();
 						$cssFilePostfix = '-' . self::$template->id;
 					}
 
 					// Key: CSS file name. Value: SCSS file name.
-					self::$collectedFiles[$fileName[0] . $cssFilePostfix] = $fileName[0];
+					self::$collectedFiles[$fileName . $cssFilePostfix] = $fileName;
 				}
 				else
 				{
