@@ -43,7 +43,7 @@
 				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY"
 				description="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY_DESC" />
 
-			<field name="loadScssPhpEarly" type="list" default="0" filter="integer"
+			<field name="loadScssPhpEarly" type="list" default="1" filter="integer"
 				label="PLG_SYSTEM_ASTROIDGHSVS_LOADSCSSPHPEARLY">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
