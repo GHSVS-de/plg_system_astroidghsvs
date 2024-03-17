@@ -45,9 +45,9 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 		self::$isJ3 = version_compare(JVERSION, '4', 'lt');
 
 		// Lade bzw. registriere Namespaces für ScssPHP früh. Keine Garantie,
-		//  dass das klappt.
+		//  dass das klappt. Aber es kann fatal enden, falls in Joomla 5 nicht.
 		if (
-			$this->params->get('loadScssPhpEarly', 0) === 1
+			$this->params->get('loadScssPhpEarly', 1) === 1
 			&& $this->app->isClient('site')
 		){
 			// Leider funktioniert das nicht im Zusammenspiel mit
