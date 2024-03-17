@@ -1,26 +1,26 @@
-2024.01.15
+2024.03.17
 
-Joomla system plugin AstroidGhsvs 2024.01.15
+Joomla system plugin AstroidGhsvs 2024.03.17
 
 Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.
 
 ### Download
-[plg_system_astroidghsvs-2024.01.15_1.12.1.0.zip](https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.01.15/dist/plg_system_astroidghsvs-2024.01.15_1.12.1.0.zip)
+[plg_system_astroidghsvs-2024.03.17_1.12.1.0.zip](https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.03.17/dist/plg_system_astroidghsvs-2024.03.17_1.12.1.0.zip)
 
 ### Joomla-Target-Platform(s)
 3.&ast;<br>4.&ast;<br>5.&ast;
 
 ### For the interested ones
-- Fix Creation of dynamic property is deprecated
-- Bump scssphp/scssphp (v1.12.0 to v1.12.1)
+- loadScssPhpEarly default to 1
+- new optional para noStyleId.
 - Deutsche Beschreibung:
 - English Description:
-- [Compare releases 2023.11.21...2024.01.15](https://github.com/GHSVS-de/plg_system_astroidghsvs/compare/2023.11.21...2024.01.15)
+- [Compare releases 2024.01.15...2024.03.17](https://github.com/GHSVS-de/plg_system_astroidghsvs/compare/2024.01.15...2024.03.17)
 - minimumJoomla: 3.9.24
 - maximumJoomla: 5.9999.9999
 - minimumPhp: 7.4.0
 - maximumPhp:
-- Checksum: `<sha256>ec83044e4f0dd47440a064274838fa4ef9f71f5a0da8caca77ebe6e3ff8e2db9</sha256>`
+- Checksum: `<sha256>90636c18b711677b68d6cba2f80bb4d35af7e9d0e381cda86ad7b6b90a31fcc3</sha256>`
 - Readme: https://github.com/GHSVS-de/plg_system_astroidghsvs#readme
 - Updates XML: https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml
 - Last tests: PHP 8.2<br>Joomla 4.4<br>Joomla 5.0
