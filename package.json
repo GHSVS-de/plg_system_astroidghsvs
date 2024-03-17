@@ -2,8 +2,8 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2024.01.15",
-	"versionCompare": "2023.11.21",
+	"version": "2024.03.17",
+	"versionCompare": "2024.01.15",
 	"versionSub": "",
 	"update": {
 		"infourl": "https://github.com/GHSVS-de/plg_system_astroidghsvs{{thisRelease}}",
