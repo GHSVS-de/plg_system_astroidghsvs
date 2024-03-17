@@ -10,6 +10,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Application\ApplicationHelper;
 
 #[\AllowDynamicProperties]
 class AstroidGhsvsHelper
@@ -490,7 +491,8 @@ class AstroidGhsvsHelper
 				self::$template = Factory::getApplication()->getTemplate(true);
 			}
 
-			self::$templateMyPath = 'templates/' . self::$template->template;
+			// Da auch /media/ sein kann 'templates/' entfernt.
+			self::$templateMyPath = self::$template->template;
 
 			// At least needed for mediaVersion:
 			if (empty(self::$template->id))
@@ -523,16 +525,27 @@ class AstroidGhsvsHelper
 
 	/** Define absolute paths of scss files (source) and css files (target).
 	*/
-	private static function getWorkPaths()
+	private static function getWorkPaths($client_id = 0)
 	{
 		self::debug('getWorkPaths() started');
 
 		if (self::$scssFolderAbs === null)
 		{
 			self::getTemplateData();
-			$templatePathAbs = JPATH_SITE . '/' . self::$templateMyPath;
+
+			$templatePathAbs = JPATH_SITE . '/templates/' . self::$templateMyPath;
 			self::$scssFolderAbs = $templatePathAbs . '/'
 				. self::$compileSettings['scssFolder'];
+
+			if (!is_dir(self::$scssFolderAbs))
+			{
+				$templatePathAbs = JPATH_SITE . '/media/templates/'
+					.  ApplicationHelper::getClientInfo($client_id)->name . '/'
+					. self::$templateMyPath;
+			self::$scssFolderAbs = $templatePathAbs . '/'
+				. self::$compileSettings['scssFolder'];
+			}
+
 			self::$cssFolderAbs = $templatePathAbs . '/'
 				. self::$compileSettings['cssFolder'];
 
