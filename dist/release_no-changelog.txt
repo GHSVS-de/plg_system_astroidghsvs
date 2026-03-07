@@ -1,29 +1,32 @@
-2024.03.17
+2026.03.07
 
-Joomla system plugin AstroidGhsvs 2024.03.17
+Joomla system plugin AstroidGhsvs 2026.03.07
 
 Joomla system plugin to support templates based on the Astroid/Templaza framework AND/OR also other templates. E.g. for more controllable SCSS compilation.
 
 ### Download
-[plg_system_astroidghsvs-2024.03.17_1.12.1.0.zip](https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2024.03.17/dist/plg_system_astroidghsvs-2024.03.17_1.12.1.0.zip)
+[plg_system_astroidghsvs-2026.03.07_2.1.0.0.zip](https://github.com/GHSVS-de/plg_system_astroidghsvs/raw/2026.03.07/dist/plg_system_astroidghsvs-2026.03.07_2.1.0.0.zip)
 
 ### Joomla-Target-Platform(s)
-3.&ast;<br>4.&ast;<br>5.&ast;
+4.&ast;<br>5.&ast;<br>6.&ast;
 
 ### For the interested ones
-- loadScssPhpEarly default to 1
-- new optional para noStyleId.
-- Deutsche Beschreibung:
-- English Description:
-- [Compare releases 2024.01.15...2024.03.17](https://github.com/GHSVS-de/plg_system_astroidghsvs/compare/2024.01.15...2024.03.17)
-- minimumJoomla: 3.9.24
-- maximumJoomla: 5.9999.9999
-- minimumPhp: 7.4.0
-- maximumPhp:
-- Checksum: `<sha256>90636c18b711677b68d6cba2f80bb4d35af7e9d0e381cda86ad7b6b90a31fcc3</sha256>`
+- Deutsche Beschreibung: 
+- English Description: 
+- [Compare releases 2024.03.17...2026.03.07](https://github.com/GHSVS-de/plg_system_astroidghsvs/compare/2024.03.17...2026.03.07)
+- minimumJoomla: 4.0.0
+- maximumJoomla: 6.9999.9999
+- minimumPhp: 8.2
+- maximumPhp: 
+- Checksum: `<sha256>8795af035c430aed1e6134c801be7271e032a8ec9b74daf8461cd482d51a2ed7</sha256>`
 - Readme: https://github.com/GHSVS-de/plg_system_astroidghsvs#readme
 - Updates XML: https://raw.githubusercontent.com/GHSVS-de/upadateservers/master/plg_system_astroidghsvs-update.xml
-- Last tests: PHP 8.2<br>Joomla 4.4<br>Joomla 5.0
+- Last tests: PHP 8.2<br>Joomla 4.4<br>Joomla 5.0<br>Joomla 6.0
 - Language files: de-DE<br>en-GB
 - Requires: Astroid Framework greater than 2.5.12 for feature "removeFields" if you use an Astroid template and activate that feature.
 - Uses: https://github.com/scssphp/scssphp
+- Contained packages (sub Joomla extensions):
+```
+
+```
+
