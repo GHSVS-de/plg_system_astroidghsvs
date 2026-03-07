@@ -740,4 +740,29 @@ class AstroidGhsvsHelper
 				FILE_APPEND);
 		}
 	}
+	/**
+	* Entfernt Astroid-Assets aus der Asset-Registry
+	* $what: z.B. 'style', Asset-Typ.
+	* $pattern: In der Uri zu suchendes Fitzel. z.B. '/css/compiled-'
+	* $wa: WebAssetManger-Instanz
+	* siehe auch comment in onBeforeCompileHead() des Plugins.
+	*/
+	public static function removeAstroidAssets($what, $pattern, $wa)
+	{
+		// Ein Array:
+		$assetItems = $wa->getAssets($what);
+
+		foreach($assetItems as $key => $asset)
+		{
+			$assetUri = $asset->getUri(false);
+
+			if (
+				0 === strpos($key, 'astroid.' . $what)
+				&& strpos($assetUri, $pattern)
+			){
+				$wa->disableStyle($key);
+				self::debug('Aus AssetManger entfernt: ' . $assetUri);
+			}
+		}
+	}
 }

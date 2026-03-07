@@ -77,6 +77,23 @@ class PlgSystemAstroidGhsvs extends CMSPlugin
 			self::getModeAndThings();
 		}
 	}
+	public function onBeforeCompileHead()
+	{
+		/* Astroid: Entferne compiled-Assets. Sonst doppeltes CSS, wenn auch meins geladen wird.
+		Hintergrund: Astroid-Framework verwendet jetzt ebenfalls den Joomla-WebAssetManager.
+		Früher hat Astroid einen anderen Stiefel gefahren, den man jetzt nicht mehr trivial
+		blocken kann.
+		*/
+
+		if (
+			$this->params->get('removeAstroidAssets', 0) === 1
+			&& $this->app->isClient('site')
+			&& defined('_ASTROID')
+		){
+			AstroidGhsvsHelper::removeAstroidAssets('style', $pattern = '/css/compiled-',
+				self::getWa());
+		}
+	}
 
 	public function onBeforeAstroidRender()
 	{
