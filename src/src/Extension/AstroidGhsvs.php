@@ -1,4 +1,4 @@
-	<?php
+<?php
 
 namespace GHSVS\Plugin\System\AstroidGhsvs\Extension;
 
