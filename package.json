@@ -2,7 +2,7 @@
 	"name": "plg_system_astroidghsvs",
 	"nameReal": "plg_system_astroidghsvs",
 	"filename": "astroidghsvs",
-	"version": "2026.03.07",
+	"version": "2026.03.09",
 	"versionCompare": "2024.03.17",
 	"versionSub": "",
 	"update": {
@@ -16,7 +16,7 @@
 			"5.*",
 			"6.*"
 		],
-		"namespace": "GHSVS\\Plugin\\System\\Astroidghsvs"
+		"namespace": "GHSVS\\Plugin\\System\\AstroidGhsvs"
 	},
 	"releaseTxt": {
 		"title": "Joomla system plugin AstroidGhsvs",
@@ -85,7 +85,7 @@
 		"update": "npm update --save-dev"
 	},
 	"devDependencies": {
-		"fs-extra": "^11.3.4"
+
 	},
 	"browserslist": []
 }
