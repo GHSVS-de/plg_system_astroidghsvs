@@ -18,7 +18,7 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="4.*" />
 		<php_minimum>8.2</php_minimum>
-		<sha256>76d5fe53209194d325b1248ae2d8769b79e72ec382b2d9b522c40da9eca311cf</sha256>
+		<sha256>a8401f9fb0d501d7a35ba198bf02fd0a9a9957897232f1560d200bd57bcd3bdb</sha256>
 	</update>
 <!--/PLG_SYSTEM_ASTROIDGHSVS Version 2026.03.09 Target platform: 4.*-->
 <!--PLG_SYSTEM_ASTROIDGHSVS Version 2026.03.09 Target platform: 5.*-->
@@ -41,7 +41,7 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="5.*" />
 		<php_minimum>8.2</php_minimum>
-		<sha256>76d5fe53209194d325b1248ae2d8769b79e72ec382b2d9b522c40da9eca311cf</sha256>
+		<sha256>a8401f9fb0d501d7a35ba198bf02fd0a9a9957897232f1560d200bd57bcd3bdb</sha256>
 	</update>
 <!--/PLG_SYSTEM_ASTROIDGHSVS Version 2026.03.09 Target platform: 5.*-->
 <!--PLG_SYSTEM_ASTROIDGHSVS Version 2026.03.09 Target platform: 6.*-->
@@ -64,6 +64,6 @@
 		<maintainerurl>https://ghsvs.de</maintainerurl>
 		<targetplatform name="joomla" version="6.*" />
 		<php_minimum>8.2</php_minimum>
-		<sha256>76d5fe53209194d325b1248ae2d8769b79e72ec382b2d9b522c40da9eca311cf</sha256>
+		<sha256>a8401f9fb0d501d7a35ba198bf02fd0a9a9957897232f1560d200bd57bcd3bdb</sha256>
 	</update>
 <!--/PLG_SYSTEM_ASTROIDGHSVS Version 2026.03.09 Target platform: 6.*-->
