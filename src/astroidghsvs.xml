@@ -23,7 +23,7 @@
 	<allowDowngrades>{{allowDowngrades}}</allowDowngrades>
 
 	<files>
-		<filename plugin="{{filename}}">{{filename}}.php</filename>
+		<folder plugin="{{filename}}">services</folder>
 		<filename>installerScript.php</filename>
 		<filename>LICENSE.txt</filename>
 		<folder>exampleScaffold</folder>

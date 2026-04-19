@@ -3,7 +3,7 @@
 * This AstroidTemplateHelper requires the plugin plg_system_astroidghsvs!
 * Also template's index.php needs configurations to let SCSS helper run.
 */
-defined('_JEXEC') or die;
+namespace GHSVS\Plugin\System\AstroidGhsvs\Helper;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
@@ -11,6 +11,9 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use GHSVS\Plugin\System\AstroidGhsvs\Extension\AstroidGhsvs;
+
+\defined('_JEXEC') or die;
 
 #[\AllowDynamicProperties]
 class AstroidGhsvsHelper

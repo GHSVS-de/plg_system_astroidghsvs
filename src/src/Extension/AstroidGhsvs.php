@@ -1,5 +1,6 @@
-<?php
-defined('_JEXEC') or die;
+	<?php
+
+namespace GHSVS\Plugin\System\AstroidGhsvs\Extension;
 
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Language\Text;
@@ -7,20 +8,22 @@ use Joomla\CMS\Factory;
 use Astroid\Framework;
 use Astroid\Helper;
 use Astroid\Helper\Template;
+use GHSVS\Plugin\System\AstroidGhsvs\Helper\AstroidGhsvsHelper;
+
+\defined('_JEXEC') or die;
 
 if (is_dir(JPATH_LIBRARIES . '/astroid/framework/library/astroid'))
 {
-	JLoader::registerNamespace('Astroid',
+	\JLoader::registerNamespace('Astroid',
 		JPATH_LIBRARIES . '/astroid/framework/library/astroid',
 		false, false, 'psr4'
 	);
 }
 
-JLoader::register('AstroidGhsvsHelper',
-	__DIR__ . '/src/Helper/AstroidGhsvsHelper.php');
-
-class PlgSystemAstroidGhsvs extends CMSPlugin
+final class AstroidGhsvs extends CMSPlugin
 {
+	protected $autoloadLanguage = true;
+
 	protected $app;
 
 	protected static $mode;
